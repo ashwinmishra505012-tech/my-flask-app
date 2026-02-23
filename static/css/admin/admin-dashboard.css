@@ -1,0 +1,138 @@
+/* Admin Dashboard Sidebar styles */
+:root {
+  --admin-sidebar-width: 260px;
+  --admin-sidebar-collapsed: 72px;
+  --admin-surface: #e8f5e9; /* soft mint */
+  --admin-accent: #1e7f5c; /* dark green */
+  --admin-text: #0b3b23;
+  --admin-transition-fast: 220ms;
+  --admin-transition-overlay: 200ms;
+}
+
+.admin-shell {
+  display: flex;
+  min-height: 60vh;
+  position: relative;
+}
+
+.admin-sidebar {
+  width: var(--admin-sidebar-width);
+  background: var(--admin-surface);
+  box-shadow: 0 6px 18px rgba(27,94,32,0.045);
+  border-radius: 12px;
+  padding: 16px 14px;
+  box-sizing: border-box;
+  /* collapsed state: leave a slim visible edge on desktop for discoverability */
+  transform: translateX(calc(-100% + 48px));
+  transition: transform var(--admin-transition-fast) cubic-bezier(.2,.9,.2,1), box-shadow 180ms;
+  z-index: 1200;
+}
+.admin-sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.brand {
+  font-weight: 800;
+  color: var(--admin-accent);
+  font-family: 'Poppins', Arial, sans-serif;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sidebar-nav .nav-link {
+  display: block;
+  color: var(--admin-text);
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.sidebar-nav .nav-link:hover {
+  background: rgba(27,94,32,0.06);
+}
+
+.admin-main {
+  flex: 1 1 auto;
+  padding: 16px;
+  transition: margin-left var(--admin-transition-fast) cubic-bezier(.2,.9,.2,1);
+}
+
+/* When sidebar is open on desktop, push content */
+.admin-shell.sidebar-open .admin-main {
+  margin-left: var(--admin-sidebar-width);
+}
+
+/* Toggle button */
+.sidebar-toggle {
+  background: var(--admin-surface);
+  border: 1px solid rgba(0,0,0,0.04);
+  color: var(--admin-accent);
+  font-size: 20px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(27,94,32,0.06);
+}
+
+/* Desktop starting state: sidebar collapsed (hidden) but toggle visible */
+@media (min-width: 900px) {
+  .admin-sidebar {
+    position: fixed;
+    top: 88px; /* below navbar */
+    left: 18px;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+  .sidebar-toggle {
+    position: fixed;
+    left: 18px;
+    top: 22px;
+    z-index: 1300;
+  }
+}
+
+/* Mobile: overlay sidebar */
+@media (max-width: 899px) {
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 80%;
+    max-width: 320px;
+    border-radius: 0 12px 12px 0;
+    padding-top: 56px;
+    transform: translateX(-100%); /* fully hidden on mobile */
+  }
+  .sidebar-toggle {
+    position: fixed;
+    left: 12px;
+    top: 12px;
+    z-index: 1400;
+  }
+  .admin-shell .admin-main { margin-left: 0; }
+}
+
+.admin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.28);
+  z-index: 1100;
+  opacity: 0;
+  transition: opacity var(--admin-transition-overlay);
+}
+.admin-overlay.visible { opacity: 1; }
+
+/* Keep existing top admin-links visible and untouched */
+.admin-links { z-index: 1400; }
+
+.sidebar-sep { height: 1px; background: rgba(0,0,0,0.04); margin: 6px 0 12px 0; border-radius: 2px; }

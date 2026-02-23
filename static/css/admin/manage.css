@@ -1,0 +1,93 @@
+/* manage.css - Admin Content Management */
+body {
+    background: #f6f8fa;
+}
+.admin-manage-section {
+    max-width: 900px;
+    margin: 5vh auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(31,111,67,0.08);
+    padding: 2.5rem 2rem 2rem 2rem;
+}
+.admin-manage-section h2 {
+    color: #1f6f43;
+    margin-bottom: 1.5rem;
+}
+.content-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+.content-card {
+    background: #f6f8fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(31,111,67,0.10);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+.content-card:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 16px rgba(31,111,67,0.18);
+}
+.thumb {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: #e0f2f1;
+}
+.card-info {
+    padding: 1rem;
+}
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f6f43;
+    margin-bottom: 0.5rem;
+}
+.card-desc {
+    color: #2e7d32;
+    font-size: 0.98rem;
+    margin-bottom: 0.5rem;
+}
+.card-status {
+    font-size: 0.95rem;
+    color: #1f6f43;
+    margin-bottom: 1rem;
+}
+.card-actions {
+    display: flex;
+    gap: 1rem;
+}
+.btn-edit, .btn-delete {
+    padding: 0.5rem 1.1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-edit {
+    background: #a8ffdf;
+    color: #1f6f43;
+    border: 2px solid #1f6f43;
+}
+.btn-edit:hover {
+    background: #1f6f43;
+    color: #fff;
+}
+.btn-delete {
+    background: #ffd4d4;
+    color: #a00;
+    border: 2px solid #a00;
+}
+.btn-delete:hover {
+    background: #a00;
+    color: #fff;
+}

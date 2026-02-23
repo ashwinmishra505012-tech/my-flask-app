@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Admin Login - MedVika{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin-dashboard.css') }}">
+{% endblock %}
+{% block content %}
+<div class="admin-shell">
+    {% include 'admin/_admin_sidebar.html' %}
+
+    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+
+    <main class="admin-main">
+        <section class="admin-login-section">
+        <form method="POST" class="admin-login-form">
+            <h2>Admin Login</h2>
+            <input id="login_username" type="text" name="username" placeholder="Username" maxlength="32" required>
+            {% if username_error %}
+                <div style="color:#ef4444;font-size:0.9rem;margin-top:6px">{{ username_error }}</div>
+            {% endif %}
+            <div style="display:flex;align-items:center;gap:8px">
+                <input id="login_password" type="password" name="password" placeholder="Password" maxlength="32" required style="flex:1" value="{{ wrong_password or '' }}">
+                {% if password_error %}
+                    <div style="color:#ef4444;font-size:0.9rem;margin-top:6px">{{ password_error }}</div>
+                {% endif %}
+                <button id="toggle_show_password_login" type="button" aria-pressed="false" aria-label="Show password"
+                        style="background:transparent;border:1px solid #d1d5db;padding:6px 10px;border-radius:6px;color:#374151;cursor:pointer">
+                    Show
+                </button>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        </form>
+        </section>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin/admin-dashboard.js') }}"></script>
+
+<script>
+// Toggle password visibility on admin login (button)
+document.getElementById('toggle_show_password_login')?.addEventListener('click', function(e){
+    const btn = e.currentTarget;
+    const pw = document.getElementById('login_password');
+    if(!pw || !btn) return;
+    const isShown = btn.getAttribute('aria-pressed') === 'true';
+    if(isShown){
+        pw.type = 'password';
+        btn.setAttribute('aria-pressed', 'false');
+        btn.textContent = 'Show';
+    } else {
+        pw.type = 'text';
+        btn.setAttribute('aria-pressed', 'true');
+        btn.textContent = 'Hide';
+    }
+    // keep focus on password field
+    try{ pw.focus(); }catch(_){ }
+});
+
+// Note: when login fails, the attempted password is shown in the input as requested
+</script>
+
+{% endblock %}

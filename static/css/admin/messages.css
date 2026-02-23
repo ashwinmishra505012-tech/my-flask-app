@@ -1,0 +1,38 @@
+/* messages.css - Admin Messages Page */
+body {
+    background: #f6f8fa;
+}
+.admin-messages-section {
+    max-width: 700px;
+    margin: 5vh auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(31,111,67,0.08);
+    padding: 2.5rem 2rem 2rem 2rem;
+}
+.admin-messages-section h2 {
+    color: #1f6f43;
+    margin-bottom: 1.5rem;
+}
+.messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.message-item {
+    background: #f6f8fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(31,111,67,0.10);
+    padding: 1rem;
+}
+.message-header {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.95rem;
+    color: #1f6f43;
+    margin-bottom: 0.5rem;
+}
+.message-body {
+    color: #2e7d32;
+    font-size: 1.1rem;
+}

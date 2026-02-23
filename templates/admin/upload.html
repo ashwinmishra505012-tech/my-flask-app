@@ -1,0 +1,353 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Upload Content - MedVika Admin{% endblock %}
+{% block admin_head %}
+<style>
+  .upload-header{margin-bottom:1.5rem}
+  .upload-header h2{margin:0 0 .5rem;font-size:1.75rem}
+  .content-stats{display:flex;gap:1rem;font-size:.9rem;color:#94a3b8}
+  .upload-card{background:#0f172a;border:1px solid rgba(255,255,255,0.02);border-radius:.75rem;padding:1.5rem;margin-bottom:1.5rem}
+  .form-group{margin-bottom:1.25rem}
+  .form-label{display:block;margin-bottom:.5rem;font-weight:500;color:#e6eef6;font-size:.95rem}
+  .form-radio-group{display:flex;gap:1.5rem;margin-bottom:1.25rem}
+  .radio-option{display:flex;align-items:center;gap:.5rem;cursor:pointer;user-select:none}
+  .radio-option input[type="radio"]{width:18px;height:18px;cursor:pointer;accent-color:#3b82f6}
+  .radio-option label{cursor:pointer;color:#e6eef6}
+  .form-input,.form-textarea{width:100%;padding:.75rem;background:#071224;border:1px solid rgba(255,255,255,0.05);border-radius:.5rem;color:#e6eef6;font-size:.95rem;font-family:inherit}
+  .form-input:focus,.form-textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.1)}
+  .form-textarea{min-height:100px;resize:vertical}
+  .btn-upload{background:#3b82f6;color:white;padding:.75rem 1.5rem;border:none;border-radius:.5rem;font-weight:500;cursor:pointer;transition:all .2s}
+  .btn-upload:hover{background:#2563eb;transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,130,246,0.3)}
+  .msg{padding:1rem;border-radius:.5rem;margin-bottom:1rem;font-size:.95rem}
+  .msg.success{background:rgba(34,197,94,0.1);border:1px solid #22c55e;color:#86efac}
+  .msg.error{background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#fca5a5}
+  .content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem}
+  @media(min-width:1400px){
+    .content-grid{grid-template-columns:repeat(4,1fr)}
+  }
+  @media(min-width:1024px) and (max-width:1399px){
+    .content-grid{grid-template-columns:repeat(3,1fr)}
+  }
+  @media(min-width:768px) and (max-width:1023px){
+    .content-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  .content-item{background:#0f172a;border:1px solid rgba(255,255,255,0.02);border-radius:.75rem;overflow:hidden;transition:all .2s}
+  .content-item:hover{border-color:#3b82f6;box-shadow:0 0 20px rgba(59,130,246,0.1)}
+  .content-thumb{width:100%;height:240px;object-fit:cover;background:#071224;display:block}
+  .content-item video{width:100% !important;height:240px !important;object-fit:cover;background:#071224;display:block;border:none}
+  .content-meta{padding:1rem}
+  .content-title{font-weight:600;color:#e6eef6;margin-bottom:.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .content-desc{font-size:.85rem;color:#94a3b8;margin-bottom:.75rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .content-type{display:inline-block;font-size:.8rem;background:rgba(59,130,246,0.1);color:#60a5fa;padding:.25rem .5rem;border-radius:.25rem;margin-bottom:.5rem}
+  .content-actions{display:flex;gap:.5rem}
+  .btn-small{flex:1;padding:.5rem;font-size:.85rem;border:none;border-radius:.4rem;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;justify-content:center}
+  .btn-manage{background:#3b82f6;color:white}
+  .btn-manage:hover{background:#2563eb}
+  .btn-delete{background:#ef4444;color:white}
+  .btn-delete:hover{background:#dc2626}
+  .no-content{grid-column:1/-1;padding:2rem;text-align:center;color:#94a3b8}
+  .filter-label{color:#94a3b8;font-size:.9rem;margin-right:.5rem}
+  .doctor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;margin-top:1.5rem}
+  .doctor-card{background:#0f172a;border:1px solid rgba(255,255,255,0.02);border-radius:.75rem;overflow:hidden;transition:all .2s}
+  .doctor-card:hover{border-color:#3b82f6;box-shadow:0 0 20px rgba(59,130,246,0.1)}
+  .doctor-image{width:100%;height:220px;object-fit:cover;background:#071224;display:block}
+  .doctor-info{padding:1rem}
+  .doctor-name{font-weight:600;color:#e6eef6;margin-bottom:.5rem}
+  .doctor-qual{font-size:.9rem;color:#60a5fa;margin-bottom:.25rem}
+  .doctor-desig{font-size:.85rem;color:#94a3b8;margin-bottom:.75rem;font-style:italic}
+  .doctor-actions{display:flex;gap:.5rem}
+  .btn-doctor-edit{flex:1;background:#3b82f6;color:white;padding:.5rem;font-size:.85rem;border:none;border-radius:.4rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+  .btn-doctor-edit:hover{background:#2563eb}
+  .btn-doctor-delete{flex:1;background:#ef4444;color:white;padding:.5rem;font-size:.85rem;border:none;border-radius:.4rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+  .btn-doctor-delete:hover{background:#dc2626}
+  .no-doctors{grid-column:1/-1;padding:2rem;text-align:center;color:#94a3b8}
+  @media(max-width:768px){
+    .form-radio-group{gap:.75rem}
+    .content-grid{grid-template-columns:1fr}
+    .doctor-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:480px){
+    .doctor-grid{grid-template-columns:1fr}
+  }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="upload-header">
+  <h2>Upload Content</h2>
+  <div class="content-stats">
+    <span><i class="fas fa-image"></i> Photos: <strong>{{ content|selectattr('media_type', 'equalto', 'photo')|list|length }}</strong></span>
+    <span><i class="fas fa-video"></i> Videos: <strong>{{ content|selectattr('media_type', 'equalto', 'video')|list|length }}</strong></span>
+    <span><i class="fas fa-users"></i> Doctors: <strong id="doctorCount">0</strong></span>
+  </div>
+</div>
+
+{% if message %}
+<div class="msg {{ message_type }}">
+  {% if message_type == 'success' %}<i class="fas fa-check-circle"></i>{% else %}<i class="fas fa-exclamation-circle"></i>{% endif %} {{ message }}
+</div>
+{% endif %}
+
+<!-- Upload Tabs -->
+<div style="display:flex;gap:1rem;margin-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.1)">
+  <button class="upload-tab-btn active" id="mediaTabBtn" onclick="switchTab('media')" style="background:none;border:none;color:#e6eef6;padding:.75rem 1.5rem;font-size:.95rem;font-weight:500;cursor:pointer;border-bottom:2px solid #3b82f6;transition:all .2s">
+    <i class="fas fa-images"></i> Media Upload
+  </button>
+  <button class="upload-tab-btn" id="doctorTabBtn" onclick="switchTab('doctor')" style="background:none;border:none;color:#94a3b8;padding:.75rem 1.5rem;font-size:.95rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s">
+    <i class="fas fa-user-md"></i> Doctor Info
+  </button>
+</div>
+
+<!-- Media Upload Form -->
+<div class="upload-card" id="mediaUploadSection">
+  <form method="POST" enctype="multipart/form-data" id="uploadForm">
+    <div class="form-group">
+      <label class="form-label">Content Type</label>
+      <div class="form-radio-group">
+        <div class="radio-option">
+          <input type="radio" id="photo" name="media_type" value="photo" required checked>
+          <label for="photo"><i class="fas fa-image"></i> Photo</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="video" name="media_type" value="video" required>
+          <label for="video"><i class="fas fa-video"></i> Video</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Select File</label>
+      <input type="file" name="file" accept="image/*,video/*" required class="form-input">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Title (max 50 characters)</label>
+      <input type="text" name="title" maxlength="50" placeholder="Enter title" required class="form-input">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Description (max 100 characters)</label>
+      <textarea name="description" maxlength="100" placeholder="Enter description" required class="form-textarea"></textarea>
+    </div>
+
+    <button type="submit" class="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+  </form>
+</div>
+
+<!-- Doctor Info Upload Form -->
+<div class="upload-card" id="doctorUploadSection" style="display:none">
+  <form id="doctorForm" enctype="multipart/form-data">
+    <div class="form-group">
+      <label class="form-label">Doctor Name *</label>
+      <input type="text" name="name" placeholder="Enter doctor name" maxlength="50" required class="form-input">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Qualification</label>
+      <input type="text" name="qualification" placeholder="e.g. B.Pharm, PharmD, MD, MBBS (optional)" maxlength="50" class="form-input">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Designation</label>
+      <input type="text" name="designation" placeholder="e.g. Chief Pharmacist, Lead Doctor (optional)" maxlength="50" class="form-input">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Doctor Photo *</label>
+      <input type="file" name="image" accept="image/jpeg,image/png,image/webp" required class="form-input">
+      <small style="color:#94a3b8;font-size:.85rem">JPG, PNG, or WebP (max 5MB)</small>
+    </div>
+
+    <button type="submit" class="btn-upload"><i class="fas fa-user-plus"></i> Add Doctor</button>
+  </form>
+</div>
+
+<h3 style="margin:2rem 0 1rem;color:#e6eef6;font-size:1.25rem;" id="doctorsHeading" style="display:none">
+  <i class="fas fa-users"></i> Uploaded Doctors
+</h3>
+<div class="doctor-grid" id="doctorsList" style="display:none">
+</div>
+
+<h3 style="margin:2rem 0 1rem;color:#e6eef6;font-size:1.25rem;">
+  <i class="fas fa-list"></i> Uploaded Content
+</h3>
+<p class="filter-label" style="margin-bottom:1rem;color:#94a3b8">
+  Filter: <span id="filterIndicator">All</span>
+</p>
+
+<div class="content-grid" id="contentList">
+  {% for item in content %}
+  <div class="content-item" data-type="{{ item.media_type }}">
+    {% if item.media_type == 'photo' %}
+    <img src="/{{ item.file_path }}" alt="{{ item.title }}" class="content-thumb" loading="lazy">
+    {% else %}
+    <video src="/{{ item.file_path }}" class="content-thumb" preload="none"></video>
+    {% endif %}
+    <div class="content-meta">
+      <div class="content-type"><i class="fas fa-{{ item.media_type == 'photo' and 'image' or 'video' }}"></i> {{ item.media_type|upper }}</div>
+      <div class="content-title">{{ item.title }}</div>
+      <div class="content-desc">{{ item.description }}</div>
+      <div class="content-actions">
+        <a href="/admin/manage" class="btn-small btn-manage"><i class="fas fa-edit"></i> Edit</a>
+        <button class="btn-small btn-delete" data-id="{{ item.id }}"><i class="fas fa-trash"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="no-content">
+    <i class="fas fa-inbox" style="font-size:3rem;margin-bottom:1rem;opacity:0.5"></i>
+    <p>No content uploaded yet.</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block admin_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const radios = document.querySelectorAll('input[name="media_type"]');
+    const filterIndicator = document.getElementById('filterIndicator');
+    
+    function updateFilter() {
+      const selected = document.querySelector('input[name="media_type"]:checked').value;
+      filterIndicator.textContent = selected.charAt(0).toUpperCase() + selected.slice(1);
+      document.querySelectorAll('.content-item').forEach(item => {
+        item.style.display = (item.getAttribute('data-type') === selected) ? '' : 'none';
+      });
+    }
+    
+    radios.forEach(radio => radio.addEventListener('change', updateFilter));
+    updateFilter();
+  });
+
+  // Delete handler
+  document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if(confirm('Are you sure you want to delete this?')) {
+        const id = this.getAttribute('data-id');
+        fetch(`/admin/delete/${id}`, { method: 'POST' })
+          .then(() => location.reload())
+          .catch(e => alert('Error deleting item'));
+      }
+    });
+  });
+
+  // Tab switching
+  window.switchTab = function(tab) {
+    const mediaSection = document.getElementById('mediaUploadSection');
+    const doctorSection = document.getElementById('doctorUploadSection');
+    const mediaBtn = document.getElementById('mediaTabBtn');
+    const doctorBtn = document.getElementById('doctorTabBtn');
+    
+    if (tab === 'media') {
+      mediaSection.style.display = 'block';
+      doctorSection.style.display = 'none';
+      mediaBtn.style.color = '#e6eef6';
+      mediaBtn.style.borderBottomColor = '#3b82f6';
+      doctorBtn.style.color = '#94a3b8';
+      doctorBtn.style.borderBottomColor = 'transparent';
+    } else {
+      mediaSection.style.display = 'none';
+      doctorSection.style.display = 'block';
+      mediaBtn.style.color = '#94a3b8';
+      mediaBtn.style.borderBottomColor = 'transparent';
+      doctorBtn.style.color = '#e6eef6';
+      doctorBtn.style.borderBottomColor = '#3b82f6';
+    }
+  };
+
+  // Load and display doctors
+  function loadDoctors() {
+    fetch('/admin/get-all-doctors')
+      .then(res => res.json())
+      .then(doctors => {
+        const doctorsList = document.getElementById('doctorsList');
+        const doctorsHeading = document.getElementById('doctorsHeading');
+        
+        if (!doctors || doctors.length === 0) {
+          doctorsHeading.style.display = 'none';
+          doctorsList.style.display = 'none';
+          return;
+        }
+        
+        doctorsList.innerHTML = doctors.map(doc => `
+          <div class="doctor-card">
+            <img src="/${doc.image_path}" alt="${doc.name}" class="doctor-image" loading="lazy">
+            <div class="doctor-info">
+              <div class="doctor-name">${doc.name}</div>
+              <div class="doctor-qual">${doc.qualification}</div>
+              ${doc.designation ? `<div class="doctor-desig">${doc.designation}</div>` : ''}
+              <div class="doctor-actions">
+                <button class="btn-doctor-edit" onclick="editDoctor(${doc.id})"><i class="fas fa-edit"></i> Edit</button>
+                <button class="btn-doctor-delete" onclick="deleteUploadDoctor(${doc.id})"><i class="fas fa-trash"></i> Delete</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+        
+        doctorsHeading.style.display = 'block';
+        doctorsList.style.display = 'grid';
+      })
+      .catch(e => console.log('Error loading doctors:', e));
+  }
+  
+  // Edit doctor - redirect to manage doctors page
+  window.editDoctor = function(id) {
+    window.location.href = '/admin/doctors?edit=' + id;
+  };
+  
+  // Delete doctor from upload page
+  window.deleteUploadDoctor = function(id) {
+    if(confirm('Are you sure you want to delete this doctor?')) {
+      fetch(`/admin/doctor/delete/${id}`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          if(data.success) {
+            loadDoctors();
+          } else {
+            alert('Error: ' + (data.error || 'Unknown error'));
+          }
+        })
+        .catch(e => alert('Error: ' + e.message));
+    }
+  };
+
+  // Doctor form submission
+  document.getElementById('doctorForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    formData.set('status', 'visible');  // Set status to visible by default
+    try {
+      const res = await fetch('/admin/doctor/add', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.success) {
+        alert('Doctor added successfully!');
+        document.getElementById('doctorForm').reset();
+        // Update doctor count and list
+        fetch('/admin/doctors-count')
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById('doctorCount').textContent = data.count || 0;
+          });
+        loadDoctors();
+      } else {
+        alert('Error: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  });
+
+  // Load doctor count
+  fetch('/admin/doctors-count')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('doctorCount').textContent = data.count || 0;
+    })
+    .catch(e => console.log('Could not load doctor count'));
+
+  // Load doctors on page load
+  loadDoctors();
+</script>
+{% endblock %}

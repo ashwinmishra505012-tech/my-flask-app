@@ -1,0 +1,114 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Messages - MedVika Admin{% endblock %}
+{% block admin_head %}
+<style>
+  .messages-header{margin-bottom:1.5rem}
+  .messages-header h2{margin:0;font-size:1.75rem;color:#e6eef6}
+  .msg-stats{display:flex;gap:1rem;font-size:.9rem;color:#94a3b8;margin-top:.5rem}
+  .messages-list{display:grid;gap:1.5rem;margin-top:1.5rem}
+  .message-item{background:#0f172a;border:1px solid rgba(59,130,246,0.2);border-radius:.75rem;padding:1.5rem;transition:all .2s;cursor:pointer;overflow:hidden}
+  .message-item:hover{border-color:#3b82f6;box-shadow:0 0 20px rgba(59,130,246,0.2);transform:translateY(-2px)}
+  .message-meta{display:grid;grid-template-columns:60px auto auto auto auto;gap:1.5rem;align-items:center;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.05)}
+  .msg-id{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:white;width:60px;height:60px;border-radius:.5rem;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.25rem}
+  .msg-sender{display:flex;flex-direction:column;gap:.2rem}
+  .msg-sender-name{font-weight:600;color:#e6eef6;font-size:1rem}
+  .msg-sender-email{color:#60a5fa;font-size:.85rem;display:flex;align-items:center;gap:.3rem}
+  .msg-contact{display:flex;flex-direction:column;gap:.2rem;align-items:flex-start}
+  .msg-phone{color:#22c55e;font-size:.9rem;display:flex;align-items:center;gap:.3rem;font-weight:600}
+  .msg-info{display:flex;flex-direction:column;gap:.2rem;align-items:flex-end}
+  .msg-time{color:#94a3b8;font-size:.85rem;display:flex;align-items:center;gap:.3rem}
+  .message-body{background:rgba(59,130,246,0.08);padding:1.25rem;border-left:4px solid #3b82f6;border-radius:.5rem;color:#e6eef6;line-height:1.8;font-size:.95rem;word-wrap:break-word;white-space:pre-wrap;max-height:80vh;overflow-y:auto;margin-bottom:1rem}
+  .message-body::-webkit-scrollbar{width:6px}
+  .message-body::-webkit-scrollbar-track{background:rgba(255,255,255,0.05);border-radius:3px}
+  .message-body::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.3);border-radius:3px}
+  .message-body::-webkit-scrollbar-thumb:hover{background:rgba(59,130,246,0.5)}
+  .message-actions{display:flex;gap:.5rem;justify-content:flex-end}
+  .btn-copy{background:#60a5fa;color:white;padding:.6rem 1.2rem;border:none;border-radius:.4rem;cursor:pointer;transition:all .2s;font-size:.9rem;display:flex;align-items:center;gap:.4rem}
+  .btn-copy:hover{background:#3b82f6;transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,130,246,0.3)}
+  .btn-delete{background:#ef4444;color:white;padding:.6rem 1.2rem;border:none;border-radius:.4rem;cursor:pointer;transition:all .2s;font-size:.9rem;display:flex;align-items:center;gap:.4rem}
+  .btn-delete:hover{background:#dc2626;transform:translateY(-1px);box-shadow:0 4px 12px rgba(239,68,68,0.3)}
+  .no-messages{padding:3rem;text-align:center;color:#94a3b8;font-size:1rem}
+  .no-messages i{font-size:4rem;margin-bottom:1rem;opacity:0.3;display:block}
+  @media(max-width:768px){
+    .message-meta{grid-template-columns:60px 1fr;gap:.75rem}
+    .msg-contact{align-items:flex-start}
+    .msg-info{align-items:flex-start}
+    .msg-time{justify-content:flex-start}
+    .message-actions{flex-direction:column}
+    .btn-copy,.btn-delete{width:100%}
+  }
+</style>
+{% endblock %}
+{% block admin_content %}
+<div class="messages-header">
+  <h2><i class="fas fa-envelope"></i> Messages</h2>
+  <div class="msg-stats">
+    <span><i class="fas fa-inbox"></i> Total: <strong>{{ messages|length }}</strong></span>
+  </div>
+</div>
+
+<div class="messages-list">
+  {% for msg in messages %}
+  <div class="message-item">
+    <div class="message-meta">
+      <div class="msg-id">#{{ msg.id }}</div>
+      <div class="msg-sender">
+        <div class="msg-sender-name"><i class="fas fa-user-circle"></i> {{ msg.name }}</div>
+        <div class="msg-sender-email"><i class="fas fa-envelope"></i> {{ msg.email }}</div>
+      </div>
+      <div class="msg-contact">
+        {% if msg.mobile %}
+        <a href="tel:{{ msg.mobile }}" class="msg-phone" title="Click to call"><i class="fas fa-phone"></i> {{ msg.mobile }}</a>
+        {% else %}
+        <div style="color:#94a3b8;font-size:.85rem"><i class="fas fa-phone-slash"></i> No phone</div>
+        {% endif %}
+      </div>
+      <div class="msg-info">
+        <div class="msg-time"><i class="fas fa-clock"></i> {{ msg.sent_time }}</div>
+      </div>
+    </div>
+    <div class="message-body" id="msg-{{ msg.id }}">{{ msg.message }}</div>
+    <div class="message-actions">
+      <button class="btn-copy" onclick="copyMessage({{ msg.id }})"><i class="fas fa-copy"></i> Copy</button>
+      <button class="btn-delete" onclick="deleteMessage({{ msg.id }})"><i class="fas fa-trash"></i> Delete</button>
+    </div>
+  </div>
+  {% else %}
+  <div class="no-messages">
+    <i class="fas fa-inbox"></i>
+    <p>No messages yet.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block admin_scripts %}
+<script>
+  function copyMessage(id) {
+    const msgElement = document.getElementById('msg-' + id);
+    const text = msgElement.textContent || msgElement.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = event.target.closest('.btn-copy');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+      }, 2000);
+    }).catch(e => alert('Error copying: ' + e));
+  }
+  
+  function deleteMessage(id) {
+    if(confirm('Are you sure you want to delete message #' + id + '?')) {
+      fetch(`/admin/message/delete/${id}`, { method: 'POST' })
+        .then(r => r.json())
+        .then(data => {
+          if(data.success) {
+            location.reload();
+          } else {
+            alert('Error deleting message');
+          }
+        })
+        .catch(e => alert('Error: ' + e));
+    }
+  }
+</script>
+{% endblock %}

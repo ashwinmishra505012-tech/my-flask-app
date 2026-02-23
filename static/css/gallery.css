@@ -1,0 +1,64 @@
+/* gallery.css - Styles for gallery page */
+/* --- Begin style.css --- */
+:root {
+	--mint: #a8ffdf;
+	--green: #3ecf8e;
+	--dark-green: #1e7f5c;
+	--white: #fff;
+	--gray: #f6f8fa;
+	--shadow: 0 2px 8px rgba(62, 207, 142, 0.08);
+}
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Segoe UI', Arial, sans-serif;
+	background: var(--gray);
+	color: var(--dark-green);
+	min-height: 100vh;
+}
+/* Medical grid background with dark green plus pattern */
+.medical-bg {
+	position: fixed;
+	top: 0; left: 0; right: 0; bottom: 0;
+	z-index: 0;
+	pointer-events: none;
+	width: 100vw;
+	height: 100vh;
+	background:
+		repeating-linear-gradient(135deg, rgba(31,111,67,0.18) 0 2px, transparent 2px 40px),
+		repeating-linear-gradient(45deg, rgba(18, 44, 30, 0.18) 0 2px, transparent 2px 40px);
+	animation: bg-move 30s linear infinite;
+}
+@keyframes bg-move {
+	0% { background-position: 0 0, 0 0; }
+	100% { background-position: 80px 80px, -80px -80px; }
+}
+.navbar {
+	background: var(--white);
+	box-shadow: var(--shadow);
+	padding: 0.5rem 0;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+.navbar .container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	font-weight: bold;
+	color: var(--green);
+	font-size: 1.5rem;
+	text-decoration: none;
+}
+
+/* --- End style.css --- */
+/* Add more gallery-specific styles here */

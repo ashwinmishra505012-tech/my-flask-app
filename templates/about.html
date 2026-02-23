@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block title %}About - MedVika{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-about">
+    <img src="{{ url_for('static', filename='img/jpeg/grp2.jpeg') }}" alt="Hero Background" class="hero-about-bg" loading="lazy" />
+    <div class="hero-about-overlay"></div>
+    <div class="hero-about-content">
+        <div class="hero-content-inner">
+            <h1 class="h1">About</h1>
+            <h2>Medvika Pharmacy</h2>
+            <div class="hero-about-text-wrap">
+                <p>A trusted partner in hospital pharmacy management, dedicated to ethical and transparent healthcare services.</p>
+                <p>We operate fully managed pharmacy outlets within hospital premises, improving patient accessibility and care quality.</p>
+                <p>Our mission is to revolutionize hospital pharmacy through innovative solutions and sustainable partnerships.</p>
+            </div>
+            <a href="/contact"><button class="btn btn-primary">Contact Us</button></a>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: Our Mission & Values -->
+<section class="mission-values-section">
+    <div class="container-max">
+        <h2>Our Mission & Values</h2>
+        <p class="mission-intro">Medvika is driven by ethical, transparent healthcare, aiming to ensure every patient has access to genuine, safe medicines with professional support.</p>
+        <div class="values-grid">
+            <div class="value-card">
+                <img src="{{ url_for('static', filename='img/icons/shop.png') }}" alt="Quality Care" class="value-icon" loading="lazy">
+                <h3>Quality Care</h3>
+                <p>Dedicated to delivering safe, effective, and ethical healthcare services.</p>
+            </div>
+            <div class="value-card">
+                <img src="{{ url_for('static', filename='img/icons/daily-tasks.png') }}" alt="Transparency" class="value-icon" loading="lazy">
+                <h3>Transparency</h3>
+                <p>Maintaining honesty and openness in all our operations and partnerships.</p>
+            </div>
+            <div class="value-card">
+                <img src="{{ url_for('static', filename='img/icons/certificate.png') }}" alt="Accessibility" class="value-icon" loading="lazy">
+                <h3>Accessibility</h3>
+                <p>Ensuring easy access to healthcare services in hospitals and communities.</p>
+            </div>
+            <div class="value-card">
+                <img src="{{ url_for('static', filename='img/icons/trust.png') }}" alt="Customer Focus" class="value-icon" loading="lazy">
+                <h3>Customer Focus</h3>
+                <p>Putting patients and partners first through reliable and responsive service.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 3: How Partnership Works -->
+<section class="how-partnership-section">
+    <div class="container-max">
+        <h2>How Partnership Works</h2>
+        <div class="steps-timeline">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Initial Discussion & Requirement Analysis</h3>
+                <p>We understand your hospital's pharmacy needs and partnership goals.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Site Assessment & Approval</h3>
+                <p>Our team visits and evaluates your hospital premises for setup feasibility.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Pharmacy Setup & Licensing</h3>
+                <p>We handle all setup, licensing, staff recruitment, and regulatory compliance.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Go Live & Revenue Sharing</h3>
+                <p>Your pharmacy goes live, and we begin transparent revenue sharing.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- SECTION 5: Compliance & Trust -->
+<section class="compliance-trust-section">
+    <div class="container-max">
+        <h2>Compliance & Trust</h2>
+        <div class="compliance-grid">
+            <div class="compliance-item">
+                <div class="compliance-icon">📋</div>
+                <h3>Drug License & GST Compliant</h3>
+                <p>All operations maintain full regulatory compliance with government healthcare standards.</p>
+            </div>
+            <div class="compliance-item">
+                <div class="compliance-icon">💳</div>
+                <h3>Ethical Billing & Transparent Reporting</h3>
+                <p>Fair pricing, clear billing, and daily transparent reports you can trust.</p>
+            </div>
+            <div class="compliance-item">
+                <div class="compliance-icon">🏥</div>
+                <h3>Healthcare Standards Compliance</h3>
+                <p>Operations fully aligned with hospital and national healthcare standards.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: Meet Our Professional Team -->
+<section class="team-section">
+    <div class="container-max">
+        <h2>Meet Our Professional Team</h2>
+        <p class="team-intro">Our experienced and dedicated healthcare professionals committed to patient care.</p>
+        {% if doctors %}
+        <div class="team-grid">
+            {% for doctor in doctors %}
+            {% if doctor.status == 'visible' %}
+            <div class="team-card">
+                <div class="team-image-container">
+                    {% if doctor.image_path and doctor.image_path != '' %}
+                        <img src="/{{ doctor.image_path }}" alt="{{ doctor.name }}" class="team-image" loading="lazy">
+                    {% else %}
+                        <div class="team-image-fallback"><i class="fas fa-user-md"></i></div>
+                    {% endif %}
+                </div>
+                <div class="team-info">
+                    <h3 class="team-name">{{ doctor.name }}</h3>
+                    <p class="team-qualification">{{ doctor.qualification }}</p>
+                    {% if doctor.designation %}
+                    <p class="team-designation">{{ doctor.designation }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- SECTION 6: Frequently Asked Questions -->
+<section class="faq-section">
+    <div class="container-max">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <h3>Is any investment required from the hospital?</h3>
+                <p>No. Medvika covers 100% of setup costs, licensing, staffing, and operations. You invest zero and earn revenue share.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How is revenue share calculated?</h3>
+                <p>Revenue share is calculated on net profit (after all expenses). Hospital receives 60% while Medvika retains 40% for operations and management.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Who handles pharmacy licensing and staff?</h3>
+                <p>Medvika handles all licensing, staff recruitment, training, and compliance. We ensure full regulatory adherence.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How is daily reporting managed?</h3>
+                <p>We provide daily sales, revenue, and inventory reports. Hospital receives transparent, audit-ready records daily.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Is this a long-term partnership?</h3>
+                <p>Yes. We believe in sustainable partnerships. Once established, we work together for long-term mutual growth.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}

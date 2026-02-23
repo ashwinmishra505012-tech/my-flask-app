@@ -1,0 +1,507 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block admin_content %}
+<div class="settings-container">
+    <div class="settings-header">
+        <h1><i class="fas fa-cog"></i> Website Settings</h1>
+        <p class="subtitle">Manage all website configuration and preferences</p>
+    </div>
+
+    <form method="POST" id="settingsForm" class="settings-form">
+        <!-- General Settings -->
+        <div class="settings-section">
+            <div class="section-header">
+                <i class="fas fa-globe"></i>
+                <h2>General Settings</h2>
+            </div>
+            
+            <div class="form-group">
+                <label for="website_name">Website Name *</label>
+                <input type="text" id="website_name" name="website_name" value="{{ settings.website_name or 'Medvika Pharmacy' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="website_description">Website Description</label>
+                <textarea id="website_description" name="website_description" rows="3" placeholder="Brief description of your pharmacy">{{ settings.website_description or '' }}</textarea>
+            </div>
+
+            <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.03);padding-top:16px">
+                <h3 style="color:#e6eef6;margin:0 0 8px">Admin Credentials</h3>
+                <p style="color:#94a3b8;margin:0 0 12px">Change the admin username or password here. Leave password blank to keep current password.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="admin_username">Admin Username</label>
+                        <input type="text" id="admin_username" name="admin_username" value="{{ settings.admin_username or 'admin' }}" placeholder="admin">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin_old_password">Current Password</label>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <input type="password" id="admin_old_password" name="admin_old_password" placeholder="Required when changing password" value="{% if show_password %}{{ show_password }}{% endif %}">
+                            <label style="font-size:0.9rem;color:#94a3b8;display:flex;align-items:center;gap:6px;cursor:pointer;margin-left:6px">
+                                <input type="checkbox" id="toggle_show_password"> Show
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" style="margin-top:8px">
+                    <div class="form-group">
+                        <label for="admin_password">New Password</label>
+                        <input type="password" id="admin_password" name="admin_password" placeholder="Leave blank to keep current password">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin_password_confirm">Confirm New Password</label>
+                        <input type="password" id="admin_password_confirm" name="admin_password_confirm" placeholder="Repeat new password">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Settings -->
+        <div class="settings-section">
+            <div class="section-header">
+                <i class="fas fa-phone"></i>
+                <h2>Contact Information</h2>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="contact_email">Contact Email *</label>
+                    <input type="email" id="contact_email" name="contact_email" value="{{ settings.contact_email or '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_phone">Contact Phone *</label>
+                    <input type="tel" id="contact_phone" name="contact_phone" value="{{ settings.contact_phone or '' }}" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="contact_address">Address</label>
+                <input type="text" id="contact_address" name="contact_address" placeholder="Business address" value="{{ settings.contact_address or '' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="business_hours">Business Hours</label>
+                <input type="text" id="business_hours" name="business_hours" placeholder="e.g., Mon-Sun: 9:00 AM - 9:00 PM" value="{{ settings.business_hours or '' }}">
+            </div>
+        </div>
+
+        <!-- Footer Settings -->
+        <div class="settings-section">
+            <div class="section-header">
+                <i class="fas fa-window-minimize"></i>
+                <h2>Footer Settings</h2>
+            </div>
+
+            <div class="form-group">
+                <label for="footer_text">Copyright Text</label>
+                <input type="text" id="footer_text" name="footer_text" placeholder="e.g., © 2026 Medvika Pharmacy. All Rights Reserved." value="{{ settings.footer_text or '' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="footer_description">Footer Description</label>
+                <textarea id="footer_description" name="footer_description" rows="2" placeholder="Short description for footer">{{ settings.footer_description or '' }}</textarea>
+            </div>
+        </div>
+
+        <!-- SEO Settings -->
+        <div class="settings-section">
+            <div class="section-header">
+                <i class="fas fa-search"></i>
+                <h2>SEO Settings</h2>
+            </div>
+
+            <div class="form-group">
+                <label for="meta_description">Meta Description</label>
+                <textarea id="meta_description" name="meta_description" rows="2" placeholder="Description for search engines" maxlength="160">{{ settings.meta_description or '' }}</textarea>
+                <small style="color: #94a3b8;">Max 160 characters</small>
+            </div>
+
+            <div class="form-group">
+                <label for="meta_keywords">Meta Keywords</label>
+                <input type="text" id="meta_keywords" name="meta_keywords" placeholder="pharmacy, medicines, health (comma separated)" value="{{ settings.meta_keywords or '' }}">
+            </div>
+        </div>
+
+        <!-- Feature Toggles -->
+        <div class="settings-section">
+            <div class="section-header">
+                <i class="fas fa-sliders-h"></i>
+                <h2>Feature Management</h2>
+            </div>
+
+            <div class="feature-toggles">
+                <div class="toggle-item">
+                    <div class="toggle-info">
+                        <h3>Gallery</h3>
+                        <p>Show gallery section on website</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="enable_gallery" {% if settings.enable_gallery %}checked{% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-info">
+                        <h3>Contact Form</h3>
+                        <p>Enable contact form for users</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="enable_contact" {% if settings.enable_contact %}checked{% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-info">
+                        <h3>Reviews</h3>
+                        <p>Show customer reviews section</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="enable_reviews" {% if settings.enable_reviews %}checked{% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="settings-actions">
+            <button type="submit" class="btn btn-save">
+                <i class="fas fa-save"></i> Save Settings
+            </button>
+            <button type="reset" class="btn btn-reset">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+.settings-container {
+    padding: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.settings-header {
+    margin-bottom: 40px;
+}
+
+.settings-header h1 {
+    font-size: 28px;
+    color: #e6eef6;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+    margin: 0;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.settings-section {
+    background: linear-gradient(135deg, #0f172a 0%, #0b1220 100%);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #1e293b;
+}
+
+.section-header i {
+    font-size: 20px;
+    color: #3b82f6;
+}
+
+.section-header h2 {
+    color: #e6eef6;
+    font-size: 18px;
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: #0b1220;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    color: #e6eef6;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 6px;
+}
+
+/* Feature Toggles */
+.feature-toggles {
+    display: grid;
+    gap: 15px;
+}
+
+.toggle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(59, 130, 246, 0.05);
+    border: 1px solid rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.toggle-item:hover {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.toggle-info h3 {
+    color: #e6eef6;
+    font-size: 14px;
+    margin: 0 0 4px 0;
+}
+
+.toggle-info p {
+    color: #94a3b8;
+    font-size: 12px;
+    margin: 0;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #334155;
+    transition: 0.3s;
+    border-radius: 26px;
+    border: 1px solid #475569;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* Action Buttons */
+.settings-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 2px solid #1e293b;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    flex: 1;
+    justify-content: center;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-reset {
+    background: #334155;
+    color: #e6eef6;
+    border: 1px solid #475569;
+}
+
+.btn-reset:hover {
+    background: #475569;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .settings-container {
+        padding: 20px;
+    }
+
+    .settings-header h1 {
+        font-size: 24px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .settings-container {
+        padding: 15px;
+    }
+
+    .settings-section {
+        padding: 15px;
+    }
+
+    .settings-header h1 {
+        font-size: 20px;
+    }
+
+    .settings-actions {
+        flex-direction: column;
+    }
+
+    .btn-save, .btn-reset {
+        width: 100%;
+    }
+
+    .toggle-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .toggle-switch {
+        align-self: flex-end;
+    }
+}
+</style>
+{% endblock %}
+
+{% block admin_scripts %}
+<script>
+document.getElementById('settingsForm')?.addEventListener('submit', function(e){
+    const newPass = document.getElementById('admin_password').value.trim();
+    const confirmPass = document.getElementById('admin_password_confirm').value.trim();
+    const oldPass = document.getElementById('admin_old_password').value.trim();
+
+    if(newPass){
+        if(!oldPass){
+            e.preventDefault();
+            alert('Please enter current password to change admin password.');
+            return false;
+        }
+        if(newPass.length < 6){
+            e.preventDefault();
+            alert('New password must be at least 6 characters.');
+            return false;
+        }
+        if(newPass !== confirmPass){
+            e.preventDefault();
+            alert('New password and confirmation do not match.');
+            return false;
+        }
+    }
+});
+// Toggle show/hide for password fields
+document.getElementById('toggle_show_password')?.addEventListener('change', function(e){
+    const show = e.target.checked;
+    const old = document.getElementById('admin_old_password');
+    const p1 = document.getElementById('admin_password');
+    const p2 = document.getElementById('admin_password_confirm');
+    if(old) old.type = show ? 'text' : 'password';
+    if(p1) p1.type = show ? 'text' : 'password';
+    if(p2) p2.type = show ? 'text' : 'password';
+});
+
+// If server provided a one-time show_password, briefly highlight the field
+;(function(){
+    const sp = "{{ show_password|default('') }}";
+    if(sp){
+        const old = document.getElementById('admin_old_password');
+        if(old){
+            old.style.borderColor = '#22c55e';
+        }
+    }
+})();
+</script>
+{% endblock %}

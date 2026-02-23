@@ -1,0 +1,628 @@
+/* Why Partner With Medvika Section */
+.why-partner-section {
+	margin: 80px auto 32px auto;
+	max-width: 1100px;
+	padding: 8px 8px 18px 8px;
+}
+.why-partner-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 36px 38px;
+	align-items: center;
+}
+.why-partner-left {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.why-partner-heading {
+	font-size: 2rem;
+	color: var(--dark-green);
+	margin-bottom: 28px;
+	text-align: left;
+	margin-top: 12px;
+	font-family: 'Poppins', Arial, sans-serif;
+	font-weight: 900;
+	white-space: nowrap;
+}
+.why-partner-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+}
+.why-partner-list li {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	font-size: 1.08rem;
+	color: #144016;
+	background: #e8f5e9;
+	border-radius: 10px;
+	padding: 12px 18px;
+	box-shadow: 0 1px 4px rgba(44,62,80,0.04);
+}
+.why-icon {
+	width: 38px;
+	height: 38px;
+	object-fit: contain;
+	flex-shrink: 0;
+}
+.why-partner-right {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.why-partner-img {
+	width: 100%;
+	max-width: 450px;
+	height: auto;
+	border-radius: 16px;
+	box-shadow: 0 4px 20px rgba(62, 207, 142, 0.12);
+	transition: all 0.3s ease;
+	object-fit: cover;
+}
+
+.why-partner-img:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 32px rgba(62, 207, 142, 0.18);
+}
+@media (min-width: 1200px) {
+	.why-partner-img {
+		max-width: 480px;
+	}
+}
+@media (max-width: 900px) {
+	.why-partner-grid {
+		grid-template-columns: 1fr;
+		gap: 28px 0;
+	}
+	.why-partner-right {
+		justify-content: flex-start;
+	}
+	.why-partner-img {
+		max-width: 350px;
+		content: url('/static/img/jpeg/updr.jpg');
+	}
+	.why-partner-img {
+		max-width: 100%;
+	}
+}
+@media (max-width: 768px) {
+	.why-partner-img {
+		max-width: 90%;
+	}
+	.why-partner-heading {
+		font-size: 1.5rem;
+		white-space: normal;
+	}
+}
+@media (max-width: 480px) {
+	.why-partner-img {
+		max-width: 85%;
+	}
+	.why-partner-heading {
+		font-size: 1.2rem;
+		white-space: normal;
+	}
+}
+.partnership-overview {
+	margin: 24px auto 32px auto;
+	max-width: 900px;
+	padding: 8px 8px 18px 8px;
+	text-align: left;
+}
+.partnership-heading {
+	text-align: left;
+	margin-bottom: 0.5em;
+	font-size: 2rem;
+	color: var(--dark-green);
+	font-family: 'Poppins', Arial, sans-serif;
+	font-weight: 900;
+}
+.center {
+	text-align: center !important;
+}
+.partnership-subtitle {
+	margin: 0 0 28px 0;
+	color: #388e3c;
+	font-size: 1.08rem;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+}
+.benefit-cards {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 18px !important;
+}
+/* Landing page sections vertical stacking and spacing */
+.about-medvika {
+	max-width: 1100px;
+	margin: 60px auto 0 auto;
+	padding: 0px;
+	border-radius: 18px;
+	box-shadow: 0 4px 24px rgba(62, 207, 142, 0.12);
+	margin-bottom: 4%;
+	border: 1px solid rgba(62, 207, 142, 0.2);
+	transition: all 0.3s ease;
+}
+
+.about-medvika:hover {
+	box-shadow: 0 8px 32px rgba(62, 207, 142, 0.15);
+}
+.about-container {
+	display: flex;
+	flex-direction: column;
+	min-height: 420px;
+	align-items: center;
+	justify-content: center;
+}
+.about-img img {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: auto;
+	border-radius: 18px 18px 0 0;
+	object-fit: cover;
+	max-height: 400px;
+	min-height: 220px;
+}
+.about-text {
+	padding: 48px 36px 40px 36px;
+	color: #01440f;
+	text-align: left;
+	font-size: 1.18rem;
+}
+.about-text h1 {
+	margin-top: 0;
+	color: var(--dark-green);
+	font-weight: 900;
+	font-family: 'Poppins', Arial, sans-serif;
+}
+.about-text .btn-primary {
+	background: #173a24;
+	color: #fff;
+	border: none;
+	font-weight: 300;
+	border-radius: 60px;
+    word-spacing: 2px;
+	padding: 10px 28px;
+	font-size: 1.08rem;
+	margin-top: 18px;
+	box-shadow: 0 2px 8px rgba(27,94,32,0.10);
+	transition: background 0.2s;
+}
+.about-text .btn-primary:hover {
+	background: #0a360cd7;
+}
+@media (min-width: 800px) {
+	.about-container {
+		flex-direction: row;
+		align-items: stretch;
+		min-height: 420px;
+	}
+	.about-img {
+		flex: 1 1 50%;
+		max-width: 50%;
+		padding: 0;
+		display: flex;
+		align-items: stretch;
+	}
+	.about-img img {
+		border-radius: 18px 0 0 18px;
+		max-height: 420px;
+		min-height: 320px;
+	}
+	.about-text {
+		flex: 1 1 50%;
+		max-width: 50%;
+		padding: 64px 56px 56px 56px;
+		font-size: 1.22rem;
+	}
+}
+.about-medvika h2,
+.partnership-overview h2,
+.why-partner h2,
+.get-in-touch h2 {
+	margin-top: 0;
+	margin-bottom: 18px;
+	font-size: 2rem;
+	color: var(--dark-green);
+	font-weight: 900;
+}
+.benefit-cards-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 36px 38px;
+	max-width: 900px;
+	margin: 0 auto;
+	justify-items: stretch;
+}
+.benefit-card {
+	display: flex;
+	align-items: flex-start;
+	gap: 18px;
+	background: #e8f5e9;
+	border-radius: 14px;
+	padding: 28px 22px 22px 22px;
+	box-shadow: 0 2px 12px rgba(62, 207, 142, 0.1);
+	min-width: 0;
+	min-height: 120px;
+	width: 100%;
+	margin: 4px 0;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+	text-align: left;
+	border: 1px solid rgba(62, 207, 142, 0.15);
+}
+
+.benefit-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 6px 20px rgba(62, 207, 142, 0.15);
+}
+.benefit-card h3 {
+	margin: 0 0 6px 0;
+	font-size: 1.08rem;
+	color: #1b5e20;
+	font-weight: 700;
+	text-align: left;
+}
+.benefit-card p {
+	margin: 0;
+	color: #144016;
+	font-size: 0.98rem;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-height: 2.6em;
+}
+.benefit-icon {
+	width: 64px;
+	height: 64px;
+	min-height: 64px;
+	object-fit: contain;
+	margin-right: 16px;
+	flex-shrink: 0;
+	align-self: flex-start;
+}
+.green1 { background: #e8f5e9; }
+.green2 { background: #d0f5e0; }
+.green3 { background: #c8e6c9; }
+.green4 { background: #b2dfdb; }
+@media (max-width: 900px) {
+	.benefit-cards-grid {
+		grid-template-columns: 1fr;
+		max-width: 400px;
+		gap: 28px 0;
+	}
+	.benefit-card {
+		width: 100%;
+		margin: 4px 0;
+	}
+}
+.why-partner ul {
+	padding-left: 20px;
+	margin: 0;
+}
+.why-partner li {
+	margin-bottom: 8px;
+	font-size: 1rem;
+	color: #374151;
+}
+.get-in-touch .contact-form {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 18px;
+}
+.get-in-touch input,
+.get-in-touch textarea {
+	padding: 10px 12px;
+	border: 1px solid #e0e0e0;
+	border-radius: 6px;
+	font-size: 1rem;
+	background: #f6f8fa;
+}
+.get-in-touch textarea {
+	min-height: 80px;
+	resize: vertical;
+}
+.get-in-touch button.btn-primary {
+	width: fit-content;
+	align-self: flex-end;
+	margin-top: 8px;
+}
+/* Remove horizontal layout for benefit cards on large screens. Always stack vertically. */
+/* home.css - Styles for home page */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
+/* --- Begin style.css --- */
+:root {
+	--mint: #a8ffdf;
+	--green: #3ecf8e;
+	--dark-green: #1e7f5c;
+	--white: #fff;
+	--gray: #f6f8fa;
+	--shadow: 0 2px 8px rgba(62, 207, 142, 0.08);
+}
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 19px;
+	background: var(--gray);
+	color: var(--dark-green);
+	min-height: 100vh;
+}
+/* Medical grid background with dark green plus pattern */
+.medical-bg {
+	position: fixed;
+	top: 0; left: 0; right: 0; bottom: 0;
+	z-index: 0;
+	pointer-events: none;
+	width: 100vw;
+	height: 100vh;
+	background:
+		repeating-linear-gradient(135deg, rgba(31,111,67,0.18) 0 2px, transparent 2px 40px),
+		repeating-linear-gradient(45deg, rgba(31,111,67,0.18) 0 2px, transparent 2px 40px);
+	animation: bg-move 22s linear infinite;
+}
+@keyframes bg-move {
+	0% { background-position: 0 0, 0 0; }
+	100% { background-position: 80px 80px, -80px -80px; }
+}
+.navbar {
+	background: var(--white);
+	box-shadow: var(--shadow);
+	padding: 0.5rem 0;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+.navbar .container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	font-weight: bold;
+	color: var(--green);
+	font-size: 1.5rem;
+	text-decoration: none;
+}
+/* --- End style.css --- */
+.hero-content h2 {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  font-size: 3rem;
+  margin-top: -15px; 
+}
+.h1{
+    font-family: 'Poppins', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 9rem;
+    margin-top: -4px;
+	margin-bottom: 1%;
+}
+.hero-content p {
+    font-size: 2.2rem;
+    color: var(--dark-green);
+    margin-bottom: 1.7rem;
+}
+@media (max-width: 768px) {
+  .hero-content h2 {
+    font-size: 1.8rem;
+    margin-top: -8px;
+  }
+
+  .h1 {
+    font-size: 4.8rem;
+  }
+
+  .hero-content p {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h2 {
+    font-size: 1.5rem;
+    margin-top: -5px;
+  }
+
+  .h1 {
+    font-size: 4.1rem;
+  }
+
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+}
+.hero {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  margin-top: 0;
+  background: linear-gradient(135deg, #f0fdf7 0%, #e8f5f0 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(62, 207, 142, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 50%, rgba(30, 127, 92, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.hero-content h1 {
+  margin: 0;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+/* Get In Touch Section */
+.get-in-touch {
+	margin: 80px auto 32px auto;
+	max-width: 1100px;
+	padding: 2rem 1rem;
+}
+
+.get-in-touch-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 40px;
+	align-items: center;
+}
+
+.get-in-touch-left {
+	display: flex;
+	flex-direction: column;
+}
+
+.get-in-touch-heading {
+	font-size: 2rem;
+	color: var(--dark-green);
+	margin-bottom: 12px;
+	text-align: center;
+	font-family: 'Poppins', Arial, sans-serif;
+	font-weight: 900;
+}
+
+.get-in-touch-subtitle {
+	color: #085c2e;
+	font-size: 1rem;
+	margin-bottom: 24px;
+	text-align: center;
+	line-height: 1.5;
+}
+
+.get-in-touch-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+
+.get-in-touch-form input,
+.get-in-touch-form textarea {
+	padding: 12px 16px;
+	border: 2px solid #e0e7e0;
+	border-radius: 10px;
+	font-size: 1rem;
+	background: #f9fdf9;
+	color: var(--dark-green);
+	font-family: 'Segoe UI', Arial, sans-serif;
+	transition: all 0.3s ease;
+}
+
+.get-in-touch-form input::placeholder,
+.get-in-touch-form textarea::placeholder {
+	color: #999;
+}
+
+.get-in-touch-form input:focus,
+.get-in-touch-form textarea:focus {
+	outline: none;
+	border-color: var(--green);
+	background: #fff;
+	box-shadow: 0 0 0 3px rgba(62, 207, 142, 0.1);
+}
+
+.get-in-touch-form input::placeholder,
+.get-in-touch-form textarea::placeholder {
+	color: #2f3a24;
+}
+
+.form-row input {
+	grid-column: span 1;
+}
+
+.get-in-touch-form textarea {
+	min-height: 140px;
+	resize: vertical;
+	grid-column: 1 / -1;
+}
+
+.get-in-touch-form button {
+	align-self: flex-start;
+}
+
+.get-in-touch-right {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.get-in-touch-img {
+	width: 100%;
+	max-width: 550px;
+	border-radius: 16px;
+	box-shadow: 0 4px 20px rgba(62, 207, 142, 0.12);
+	transition: all 0.3s ease;
+	object-fit: cover;
+}
+
+.get-in-touch-img:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 32px rgba(62, 207, 142, 0.18);
+}
+
+@media (max-width: 900px) {
+	.get-in-touch-grid {
+		grid-template-columns: 1fr;
+		gap: 28px;
+	}
+
+	.get-in-touch-heading {
+		text-align: center;
+	}
+
+	.get-in-touch-subtitle {
+		text-align: center;
+	}
+
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+
+	.get-in-touch-img {
+		max-width: 100%;
+	}
+}
+
+/* Add more home-specific styles here */

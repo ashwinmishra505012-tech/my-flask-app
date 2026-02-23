@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block admin_title %}Medvika Admin{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--bg:#0b1220;--panel:#0f1724;--muted:#94a3b8;--accent:#3b82f6;--card:#0f172a}
+    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,system-ui,Arial;background:var(--bg);color:#e6eef6}
+    .admin-app{display:flex;min-height:100vh}
+    /* Sidebar */
+    .admin-sidebar{width:260px;background:#071224;border-right:1px solid rgba(255,255,255,0.03);padding:1.25rem 0;position:fixed;left:0;top:0;bottom:0;overflow:auto}
+    .admin-sidebar .sidebar{padding:0 1rem}
+    .sidebar .brand{font-weight:700;color:var(--accent);font-size:1.125rem;margin:0 0 1rem}
+    .sidebar .nav{list-style:none;padding:0;margin:0}
+    .sidebar .nav a{display:flex;gap:.75rem;align-items:center;padding:.6rem .9rem;border-radius:.5rem;color:var(--muted);text-decoration:none;margin:0.25rem 0}
+    .sidebar .nav a i{width:20px;text-align:center}
+    .sidebar .nav a.active,.sidebar .nav a:hover{background:rgba(59,130,246,0.08);color:var(--accent)}
+    /* Main area */
+    .admin-main{margin-left:260px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.25rem;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border-bottom:1px solid rgba(255,255,255,0.02)}
+    .topbar .left{display:flex;align-items:center;gap:.75rem}
+    .topbar .search{background:var(--card);padding:.45rem .65rem;border-radius:999px;color:var(--muted);display:flex;align-items:center;gap:.5rem}
+    .topbar .search input{width:220px}
+    .topbar .actions{display:flex;align-items:center;gap:.75rem}
+    .container{padding:1.25rem;max-width:1200px;margin:0 auto}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+    .card{background:var(--card);padding:1rem;border-radius:.75rem;border:1px solid rgba(255,255,255,0.02);box-shadow:0 1px 0 rgba(255,255,255,0.01) inset}
+    .stat{display:flex;align-items:center;gap:1rem}
+    .stat .icon{width:56px;height:56px;border-radius:.6rem;display:grid;place-items:center;font-size:1.25rem}
+    .stat .icon.accent{background:linear-gradient(90deg,var(--accent),#60a5fa);color:#fff}
+    .stat .value{font-size:1.5rem;font-weight:700}
+    .section{margin-top:1rem}
+    .panel{display:flex;gap:1rem;flex-wrap:wrap}
+    .panel .col{flex:1;min-width:280px}
+    .recent-list{display:grid;gap:.5rem}
+    .recent-item{display:flex;gap:.75rem;align-items:center;padding:.6rem;border-radius:.5rem;background:transparent}
+    .recent-item img{width:56px;height:56px;border-radius:.5rem;object-fit:cover}
+    .muted{color:var(--muted)}
+    .btn{background:var(--accent);color:white;padding:.5rem .75rem;border-radius:.5rem;text-decoration:none}
+    /* overlay for mobile sidebar */
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:40}
+    @media(max-width:900px){
+      .admin-sidebar{transform:translateX(-100%);position:fixed;z-index:50;transition:transform .22s ease}
+      .admin-sidebar.open{transform:translateX(0)}
+      .sidebar-overlay.open{display:block}
+      .admin-main{margin-left:0}
+      .topbar .mobile-toggle{display:block}
+      .topbar .search input{width:120px}
+    }
+    .mobile-toggle{display:none;background:none;border:none;color:var(--muted);font-size:1.25rem}
+  </style>
+  {% block admin_head %}{% endblock %}
+</head>
+<body>
+  <div class="admin-app">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar">
+        <div class="brand">Medvika Admin</div>
+        <nav class="nav" role="navigation">
+          <a href="/admin/dashboard"><i class="fas fa-chart-line"></i> Dashboard</a>
+          <a href="/admin/manage"><i class="fas fa-images"></i> Manage</a>
+          <a href="/admin/upload"><i class="fas fa-cloud-upload-alt"></i> Upload</a>
+          <a href="/admin/messages"><i class="fas fa-envelope"></i> Messages</a>
+          <a href="/admin/map"><i class="fas fa-map-marker-alt"></i> Map</a>
+          <a href="/admin/style"><i class="fas fa-palette"></i> Style</a>
+          <a href="/admin/link"><i class="fas fa-link"></i> Link</a>
+          <a href="/admin/settings"><i class="fas fa-cog"></i> Settings</a>
+          <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="topbar">
+        <div class="left">
+          <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+          <div class="search"><i class="fas fa-search muted"></i><input placeholder="Search..." style="background:transparent;border:0;color:inherit;outline:none;width:220px"></div>
+        </div>
+        <div class="actions">
+          <a class="muted" href="/admin/messages" style="position:relative;display:inline-block" id="notificationBell"><i class="fas fa-bell"></i><span id="msgBadge" style="position:absolute;top:-5px;right:-8px;background:#ef4444;color:white;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;display:none"></span></a>
+          <a class="muted" href="#"><i class="fas fa-user-circle"></i></a>
+        </div>
+      </header>
+
+      <div class="container">
+        {% block admin_content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <script>
+    const sidebar = document.getElementById('adminSidebar');
+    const toggle = document.getElementById('mobileToggle');
+    const overlay = document.getElementById('sidebarOverlay');
+    function openSidebar(state){
+      if(state){sidebar.classList.add('open');overlay.classList.add('open');document.body.style.overflow='hidden'}else{sidebar.classList.remove('open');overlay.classList.remove('open');document.body.style.overflow=''}
+    }
+    if(toggle){toggle.addEventListener('click',()=>{openSidebar(!sidebar.classList.contains('open'))})}
+    if(overlay){overlay.addEventListener('click',()=>openSidebar(false))}
+    // set active link safely
+    document.querySelectorAll('.nav a').forEach(a=>{try{if(a.href===location.href){a.classList.add('active')}}catch(e){}})
+    // close sidebar on escape
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')openSidebar(false)})
+    
+    // Fetch and update message count
+    function updateMessageCount() {
+      fetch('/admin/message/count')
+        .then(r => r.json())
+        .then(data => {
+          const badge = document.getElementById('msgBadge');
+          if(data.count > 0) {
+            badge.textContent = data.count;
+            badge.style.display = 'flex';
+          } else {
+            badge.style.display = 'none';
+          }
+        })
+        .catch(e => console.log('Error fetching messages:', e));
+    }
+    
+    updateMessageCount();
+    setInterval(updateMessageCount, 5000);
+  </script>
+  {% block admin_scripts %}{% endblock %}
+</body>
+</html>

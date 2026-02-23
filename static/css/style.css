@@ -1,0 +1,363 @@
+/* style.css - MedVika Pharmacy Theme */
+:root {
+    --mint: #a8ffdf;
+    --green: #3ecf8e;
+    --dark-green: #1e7f5c;
+    --white: #fff;
+    --gray: #f6f8fa;
+    --shadow: 0 2px 8px rgba(62, 207, 142, 0.08);
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--gray);
+    color: var(--dark-green);
+    min-height: 100vh;
+}
+/* Medical grid background with dark green plus pattern */
+.medical-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    background:
+        repeating-linear-gradient(135deg, rgba(24, 87, 52, 0.18) 0 2px, transparent 2px 40px),
+        repeating-linear-gradient(45deg, rgba(31,111,67,0.18) 0 2px, transparent 2px 40px);
+    animation: bg-move 30s linear infinite;
+}
+@keyframes bg-move {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 80px 80px, -80px -80px; }
+}
+.navbar {
+    background: var(--white);
+    box-shadow: var(--shadow);
+    padding: 0.5rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 0rem;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-weight: bold;
+    color: var(--green);
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+.logo-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--mint);
+    box-shadow: 0 2px 8px rgba(62, 207, 142, 0.10);
+    border: 2px solid var(--green);
+    overflow: hidden;
+}
+.logo-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+}
+.logo-text {
+    font-size: 1.4rem;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    margin: 0;
+    padding: 0;
+}
+.nav-links a {
+    color: var(--dark-green);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+.nav-links a:hover, .nav-links .active {
+    background: var(--mint);
+}
+.main-content {
+    position: relative;
+    z-index: 1;
+    min-height: 70vh;
+    padding: 2rem 0 3rem 0;
+}
+.footer {
+    background: var(--mint);
+    color: var(--dark-green);
+    text-align: center;
+    padding: 1rem 0;
+    box-shadow: var(--shadow);
+    position: relative;
+    z-index: 2;
+}
+.footer-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 30px;
+    background: var(--green);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: background 0.2s, transform 0.2s;
+    text-decoration: none;
+}
+.btn-primary {
+    background: var(--green);
+}
+.btn-secondary {
+    background: var(--mint);
+    color: var(--dark-green);
+}
+.btn-upload {
+    background: var(--mint);
+    color: var(--dark-green);
+    margin: 0 0.5rem;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    border: 2px solid var(--green);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+}
+.btn-upload input[type="radio"] {
+    display: none;
+}
+.btn-upload:has(input[type="radio"]:checked) {
+    background: var(--green);
+    color: var(--white);
+    border-color: var(--dark-green);
+}
+.btn-toggle {
+    background: var(--mint);
+    color: var(--dark-green);
+    margin: 0 0.5rem;
+    border-radius: 20px;
+    border: 2px solid var(--green);
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+}
+.btn-toggle.active, .btn-toggle:hover {
+    background: var(--green);
+    color: var(--white);
+    border-color: var(--dark-green);
+}
+.flashes {
+    margin: 1rem auto;
+    max-width: 500px;
+}
+.flash {
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 0.7rem;
+    font-weight: 500;
+    box-shadow: var(--shadow);
+}
+.flash.success { background: #d4ffe6; color: var(--dark-green); }
+.flash.danger { background: #ffd4d4; color: #a00; }
+.flash.info { background: #e0f7fa; color: #00796b; }
+
+/* Gallery */
+.gallery-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+.gallery-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+/* Gallery grid smaller cards, title above image, description below */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+}
+.gallery-item {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    opacity: 0;
+    animation: fadeIn 0.7s forwards;
+    padding: 0.7rem 0.7rem 0.5rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.gallery-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f6f43;
+    background: #fff;
+    border-radius: 6px;
+    padding: 0.2rem 0.7rem;
+    margin-bottom: 0.3rem;
+    width: fit-content;
+    text-align: center;
+}
+.gallery-desc {
+    color: #2e7d32;
+    font-size: 0.95rem;
+    margin-top: 0.3rem;
+    text-align: center;
+}
+.gallery-item img, .gallery-item video {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.2s;
+    margin-bottom: 0.2rem;
+    margin-top: 10px;
+}
+.gallery-item:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Admin */
+.admin-dashboard-section, .admin-upload-section, .admin-messages-section, .admin-style-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+.admin-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+.upload-buttons {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+.contact-section, .about-section {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.contact-form input, .contact-form textarea {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--green);
+    font-size: 1rem;
+    background: var(--white);
+    color: var(--dark-green);
+}
+.contact-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+.contact-form button {
+    align-self: flex-end;
+}
+.admin-login-section {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+.admin-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.admin-login-form input {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--green);
+    font-size: 1rem;
+    background: var(--white);
+    color: var(--dark-green);
+}
+.admin-login-form button {
+    align-self: flex-end;
+}
+.messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.message-item {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 1rem;
+}
+.message-header {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--green);
+    margin-bottom: 0.5rem;
+}
+.message-body {
+    color: var(--dark-green);
+    font-size: 1.1rem;
+}
+@media (max-width: 700px) {
+    .navbar .container, .footer .container, .gallery-section, .admin-dashboard-section, .admin-upload-section, .admin-messages-section, .admin-style-section, .about-section, .contact-section {
+        padding: 0 0.5rem;
+    }
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}

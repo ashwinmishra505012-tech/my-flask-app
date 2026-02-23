@@ -1,0 +1,78 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Dashboard - MedVika Admin{% endblock %}
+{% block admin_content %}
+<h2 style="margin:0 0 .75rem;">Dashboard</h2>
+
+<div class="grid">
+	<div class="card stat">
+		<div class="icon accent"><i class="fas fa-images"></i></div>
+		<div>
+			<div class="muted">Total Photos</div>
+			<div class="value">{{ total_photos or 24 }}</div>
+		</div>
+	</div>
+	<div class="card stat">
+		<div class="icon" style="background:linear-gradient(90deg,#10b981,#34d399);color:#042">
+			<i class="fas fa-video"></i>
+		</div>
+		<div>
+			<div class="muted">Total Videos</div>
+			<div class="value">{{ total_videos or 8 }}</div>
+		</div>
+	</div>
+	<div class="card stat">
+		<div class="icon" style="background:linear-gradient(90deg,#ef4444,#fb7185);color:#fff">
+			<i class="fas fa-envelope"></i>
+		</div>
+		<div>
+			<div class="muted">New Messages</div>
+			<div class="value">{{ new_messages or 12 }}</div>
+		</div>
+	</div>
+	<div class="card stat">
+		<div class="icon" style="background:linear-gradient(90deg,#a78bfa,#7c3aed);color:#fff">
+			<i class="fas fa-users"></i>
+		</div>
+		<div>
+			<div class="muted">Visitors Today</div>
+			<div class="value">{{ visitors_today or '1,294' }}</div>
+		</div>
+	</div>
+</div>
+
+<div class="section panel">
+	<div class="col card">
+		<h3 style="margin:0 0 .6rem;">Recent Uploads</h3>
+		<div class="recent-list">
+			{% for item in recent_uploads[:6] %}
+			<div class="recent-item">
+				{% if item.media_type == 'photo' %}
+					<img src="/{{ item.file_path }}" alt="thumb" loading="lazy" style="width:48px;height:48px;border-radius:.5rem;object-fit:cover">
+				{% else %}
+					<div style="width:48px;height:48px;border-radius:.5rem;background:#031426;display:grid;place-items:center"><i class="fas fa-video"></i></div>
+				{% endif %}
+				<div style="flex:1">
+					<div style="font-weight:600">{{ item.title }}</div>
+					<div class="muted" style="font-size:.85rem">{{ item.created_at or item.updated_at }}</div>
+				</div>
+				<div class="muted">{{ item.media_type }}</div>
+			</div>
+			{% else %}
+			<div class="muted">No uploads yet.</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="col card">
+		<h3 style="margin:0 0 .6rem;">Activity Feed</h3>
+		<div class="recent-list">
+			<div class="recent-item"><div style="width:10px;height:10px;border-radius:50%;background:#34d399"></div><div style="margin-left:.75rem">System scheduled backup completed <span class="muted" style="margin-left:.5rem">2h ago</span></div></div>
+			<div class="recent-item"><div style="width:10px;height:10px;border-radius:50%;background:#60a5fa"></div><div style="margin-left:.75rem">12 new users signed up <span class="muted" style="margin-left:.5rem">6h ago</span></div></div>
+			<div class="recent-item"><div style="width:10px;height:10px;border-radius:50%;background:#f97316"></div><div style="margin-left:.75rem">Upload failed for file "big.mov" <span class="muted" style="margin-left:.5rem">1d ago</span></div></div>
+		</div>
+		<div style="margin-top:1rem;text-align:right"><a href="/admin/manage" class="btn">Manage uploads</a></div>
+	</div>
+</div>
+
+{% endblock %}
+

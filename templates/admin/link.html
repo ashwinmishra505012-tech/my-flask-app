@@ -1,0 +1,659 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block admin_content %}
+<div class="admin-container">
+    <div class="content-wrapper">
+        <!-- Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-link"></i> Social Media Links</h1>
+            <p class="subtitle">Manage social media links that appear in your website footer</p>
+        </div>
+
+        <!-- Add New Link Form -->
+        <div class="form-card">
+            <h2>Add New Social Link</h2>
+            <form id="addLinkForm">
+                <div class="form-group">
+                    <label for="platform">Platform *</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <select id="platform" name="platform" required style="flex: 1;">
+                            <option value="">Select Platform</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Twitter">Twitter / X</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="YouTube">YouTube</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="Pinterest">Pinterest</option>
+                            <option value="Snapchat">Snapchat</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Telegram">Telegram</option>
+                        </select>
+                        <div id="iconPreview" style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; display: none;">
+                            <i id="previewIcon" class=""></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="link_url">Profile URL *</label>
+                    <input type="url" id="link_url" name="link_url" placeholder="e.g., https://www.facebook.com/yourpage" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Link
+                </button>
+            </form>
+        </div>
+
+        <!-- Existing Links -->
+        <div class="links-section">
+            <h2>Current Social Links</h2>
+            {% if links %}
+                <div class="links-grid">
+                    {% for link in links %}
+                    <div class="link-card" data-id="{{ link.id }}">
+                        <div class="link-header">
+                            <div class="link-icon">
+                                <i class="{{ link.icon }}"></i>
+                            </div>
+                            <div class="link-info">
+                                <h3>{{ link.platform }}</h3>
+                                <p class="link-url">{{ link.link_url }}</p>
+                            </div>
+                        </div>
+                        <div class="link-actions">
+                            <button class="btn btn-edit" onclick="editLink({{ link.id }}, '{{ link.platform }}', '{{ link.link_url }}', '{{ link.icon }}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-delete" onclick="deleteLink({{ link.id }})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-link"></i>
+                    <p>No social links added yet. Add your first link above!</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <h2>Preview</h2>
+            <p class="preview-subtitle">This is how your social links will appear in the footer:</p>
+            <div class="footer-preview">
+                <div class="preview-links" id="previewLinks">
+                    {% if links %}
+                        {% for link in links %}
+                        <a href="{{ link.link_url }}" target="_blank" class="social-link" title="{{ link.platform }}">
+                            <i class="{{ link.icon }}"></i>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        <p style="color: #94a3b8; text-align: center;">Links will appear here</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Social Link</h2>
+            <button type="button" class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form id="editForm">
+            <input type="hidden" id="editLinkId" value="">
+            
+            <div class="form-group">
+                <label for="editPlatform">Platform *</label>
+                <select id="editPlatform" required>
+                    <option value="">Select Platform</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Twitter">Twitter / X</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="YouTube">YouTube</option>
+                    <option value="TikTok">TikTok</option>
+                    <option value="Pinterest">Pinterest</option>
+                    <option value="Snapchat">Snapchat</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Telegram">Telegram</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="editLinkUrl">Profile URL *</label>
+                <input type="url" id="editLinkUrl" placeholder="e.g., https://www.facebook.com/yourpage" required>
+            </div>
+
+            <div class="modal-buttons">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.admin-container {
+    padding: 30px;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+}
+
+.page-header {
+    margin-bottom: 40px;
+}
+
+.page-header h1 {
+    font-size: 28px;
+    color: #e6eef6;
+    margin-bottom: 8px;
+}
+
+.page-header .subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* Form Card */
+.form-card {
+    background: linear-gradient(135deg, #0f172a 0%, #0b1220 100%);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.form-card h2 {
+    color: #e6eef6;
+    font-size: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #0b1220;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    color: #e6eef6;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Links Section */
+.links-section {
+    margin-bottom: 40px;
+}
+
+.links-section h2 {
+    color: #e6eef6;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.link-card {
+    background: linear-gradient(135deg, #0f172a 0%, #0b1220 100%);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.link-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+    transform: translateY(-4px);
+}
+
+.link-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.link-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.link-info h3 {
+    color: #e6eef6;
+    font-size: 16px;
+    margin: 0 0 4px 0;
+}
+
+.link-url {
+    color: #94a3b8;
+    font-size: 12px;
+    margin: 0;
+    word-break: break-all;
+}
+
+.link-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.link-actions .btn {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-edit {
+    background: #1e3a8a;
+    color: #60a5fa;
+    border: 1px solid #3b82f6;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-edit:hover {
+    background: #1e40af;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.btn-delete {
+    background: #7f1d1d;
+    color: #fca5a5;
+    border: 1px solid #dc2626;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-delete:hover {
+    background: #991b1b;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+}
+
+.btn-secondary {
+    background: #334155;
+    color: #e6eef6;
+    border: 1px solid #475569;
+}
+
+.btn-secondary:hover {
+    background: #475569;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #0f172a 0%, #0b1220 100%);
+    border: 2px dashed #1e293b;
+    border-radius: 12px;
+    color: #94a3b8;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #475569;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Preview Section */
+.preview-section {
+    background: linear-gradient(135deg, #0f172a 0%, #0b1220 100%);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 40px;
+}
+
+.preview-section h2 {
+    color: #e6eef6;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.preview-subtitle {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.footer-preview {
+    background: #0b1220;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+}
+
+.preview-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #0f172a 0%, #0b1220 100%);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    color: #e6eef6;
+    font-size: 20px;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #e6eef6;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-buttons .btn {
+    flex: 1;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .admin-container {
+        padding: 20px;
+    }
+
+    .page-header h1 {
+        font-size: 24px;
+    }
+
+    .links-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-container {
+        padding: 15px;
+    }
+
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+    .form-card {
+        padding: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .page-header h1 {
+        font-size: 20px;
+    }
+
+    .links-section h2,
+    .preview-section h2,
+    .form-card h2 {
+        font-size: 18px;
+    }
+}
+</style>
+
+<script>
+// Platform to Icon mapping
+const platformIcons = {
+    'Facebook': 'fab fa-facebook-f',
+    'Instagram': 'fab fa-instagram',
+    'Twitter': 'fab fa-twitter',
+    'LinkedIn': 'fab fa-linkedin-in',
+    'YouTube': 'fab fa-youtube',
+    'TikTok': 'fab fa-tiktok',
+    'Pinterest': 'fab fa-pinterest-p',
+    'Snapchat': 'fab fa-snapchat-ghost',
+    'WhatsApp': 'fab fa-whatsapp',
+    'Telegram': 'fab fa-telegram',
+};
+
+// Show icon preview when platform is selected
+document.getElementById('platform')?.addEventListener('change', (e) => {
+    const platform = e.target.value;
+    const iconPreview = document.getElementById('iconPreview');
+    const previewIcon = document.getElementById('previewIcon');
+    
+    if (platform && platformIcons[platform]) {
+        const icon = platformIcons[platform];
+        previewIcon.className = icon;
+        iconPreview.style.display = 'flex';
+    } else {
+        iconPreview.style.display = 'none';
+    }
+});
+
+function editLink(id, platform, url, icon) {
+    document.getElementById('editLinkId').value = id;
+    document.getElementById('editPlatform').value = platform;
+    document.getElementById('editLinkUrl').value = url;
+    document.getElementById('editModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+
+document.getElementById('addLinkForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    formData.append('platform', document.getElementById('platform').value);
+    formData.append('link_url', document.getElementById('link_url').value);
+    
+    try {
+        const response = await fetch('{{ url_for("admin.admin_link_add") }}', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Error adding link: ' + error);
+    }
+});
+
+document.getElementById('editForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const linkId = document.getElementById('editLinkId').value;
+    const formData = new FormData();
+    formData.append('platform', document.getElementById('editPlatform').value);
+    formData.append('link_url', document.getElementById('editLinkUrl').value);
+    
+    try {
+        const response = await fetch(`{{ url_for("admin.admin_link_update", link_id=0) }}`.replace('0', linkId), {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Error updating link: ' + error);
+    }
+});
+
+async function deleteLink(id) {
+    if (confirm('Are you sure you want to delete this social link?')) {
+        try {
+            const response = await fetch(`{{ url_for("admin.admin_link_delete", link_id=0) }}`.replace('0', id), {
+                method: 'POST'
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error deleting link');
+            }
+        } catch (error) {
+            alert('Error: ' + error);
+        }
+    }
+}
+
+// Close modal when clicking outside
+document.getElementById('editModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'editModal') {
+        closeModal();
+    }
+});
+</script>
+{% endblock %}

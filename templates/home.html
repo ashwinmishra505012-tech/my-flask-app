@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medvika - Home</title>
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    {% endblock %}
+    {% extends 'base.html' %}
+    {% block title %}Home - MedVika{% endblock %}
+</head>
+<body>
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="h1">Welcome</h1>
+        <h2>to Medvika Pharmacy</h2>
+        <p>Your trusted partner in health and wellness.</p>
+    </div>
+</section>
+<!-- SECTION 1: About Medvika -->
+<section class="about-medvika">
+    <div class="about-container">
+        <div class="about-img">
+            <img src="{{ url_for('static', filename='img/jpeg/counter.jpeg') }}" alt="Medvika Pharmacy Counter" />
+        </div>
+        <div class="about-text">
+            <h1>About Medvika</h1>
+            <p>
+                Medvika is a growing and trusted hospital pharmacy chain dedicated to ethical, transparent, and quality healthcare services. We operate fully managed pharmacy outlets within hospital premises, aiming to improve patient care and accessibility for all. Our focus is on building long-term partnerships that enhance healthcare delivery.
+            </p>
+            <a href="/about" rel="noopener noreferrer"><button class="btn btn-primary">Learn More</button></a>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 2: Partnership Overview -->
+<section class="partnership-overview">
+    <h2 class="partnership-heading center">Partnership Overview</h2>
+    <p class="partnership-subtitle center">Grow your hospital pharmacy business with our trusted, risk-free partnership model.</p>
+    <div class="benefit-cards-grid">
+        <div class="benefit-card green1">
+            <img src="{{ url_for('static', filename='img/icons/graph.png') }}" alt="Revenue Share" class="benefit-icon">
+            <div>
+                <h3>60% Revenue Share</h3>
+                <p>Partner receives a 60% share on net profit with no investment or operational risk.</p>
+            </div>
+        </div>
+        <div class="benefit-card green2">
+            <img src="{{ url_for('static', filename='img/icons/doctor.png') }}" alt="Qualified Staff" class="benefit-icon">
+            <div>
+                <h3>Qualified Staff & Goodwill</h3>
+                <p>Professionally trained pharmacy staff to enhance trust and hospital reputation.</p>
+            </div>
+        </div>
+        <div class="benefit-card green3">
+            <img src="{{ url_for('static', filename='img/icons/shop.png') }}" alt="Branded Pharmacy" class="benefit-icon">
+            <div>
+                <h3>Branded Pharmacy Solutions</h3>
+                <p>Branded setup with billing systems, daily reporting, and audit-ready records.</p>
+            </div>
+        </div>
+        <div class="benefit-card green4">
+            <img src="{{ url_for('static', filename='img/icons/trust.png') }}" alt="Zero Risk" class="benefit-icon">
+            <div>
+                <h3>Zero Investment, Zero Risk</h3>
+                <p>Complete pharmacy setup and operations managed with zero financial burden.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 3: Why Partner With Medvika? -->
+<section class="why-partner-section">
+    <div class="why-partner-grid">
+        <div class="why-partner-left">
+            <img src="{{ url_for('static', filename='img/jpeg/updr.jpg') }}" alt="Medvika Doctor" class="why-partner-img" loading="lazy" data-mobile-src="{{ url_for('static', filename='img/jpeg/updr.jpg') }}">
+        </div>
+        <div class="why-partner-right">
+            <h2 class="why-partner-heading">Why Partner With Medvika?</h2>
+            <ul class="why-partner-list">
+                <li>
+                    <img src="{{ url_for('static', filename='img/icons/management.png') }}" alt="Management" class="why-icon">
+                    <span>Professional Inventory & Staff Management</span>
+                </li>
+                <li>
+                    <img src="{{ url_for('static', filename='img/icons/certificate.png') }}" alt="Certificate" class="why-icon">
+                    <span>Certified & Compliant Operations</span>
+                </li>
+                <li>
+                    <img src="{{ url_for('static', filename='img/icons/trust.png') }}" alt="Trust" class="why-icon">
+                    <span>Trusted by Leading Hospitals</span>
+                </li>
+                <li>
+                    <img src="{{ url_for('static', filename='img/icons/daily-tasks.png') }}" alt="Daily Tasks" class="why-icon">
+                    <span>Automated Daily Reporting & Billing</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 4: Get In Touch -->
+<section class="get-in-touch">
+    <div class="get-in-touch-grid">
+        <div class="get-in-touch-left">
+            <h2 class="get-in-touch-heading">Get In Touch</h2>
+            <p class="get-in-touch-subtitle">Hospitals and healthcare partners are welcome to connect with us for a trusted pharmacy partnership.</p>
+            <form class="get-in-touch-form" method="post" action="/contact">
+                <div class="form-row">
+                    <input type="text" name="full_name" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="text" name="address" placeholder="Address" required>
+                    <input type="tel" name="mobile" placeholder="Mobile Number" required>
+                </div>
+                <textarea name="message" placeholder="Your Message" required></textarea>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+        <div class="get-in-touch-right">
+            <img src="{{ url_for('static', filename='img/jpeg/grdr.jpg') }}" alt="Medvika Doctor" class="get-in-touch-img">
+        </div>
+    </div>
+</section>
+
+        <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}
+</body>
+</html>

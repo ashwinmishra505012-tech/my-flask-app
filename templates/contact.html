@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block title %}Contact - MedVika{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+{% block content %}
+
+<!-- SECTION 1: Contact Hero Banner -->
+<section class="contact-hero">
+    <img src="{{ url_for('static', filename='img/jpeg/grp3.jpeg') }}" alt="Medical Team" class="contact-hero-img" loading="lazy" />
+    <div class="contact-hero-overlay"></div>
+    <div class="contact-hero-content">
+        <h1>Contact Us</h1>
+        <h2>Get in Touch with Medvika</h2>
+        <p>We're here to support your healthcare partnership journey and answer any questions you may have.</p>
+        <a href="tel:{{ settings.contact_phone or '+919026805902' }}"><button class="btn btn-primary btn-large">Call Us: {{ settings.contact_phone or '+91 9026805902' }}</button></a>
+    </div>
+</section>
+
+<!-- SECTION 2 & 3: Get in Touch Form + Contact Information (Two Column) -->
+<section class="contact-main">
+    <div class="container-max">
+        <div class="contact-grid">
+            <!-- Left Column: Contact Form -->
+            <div class="contact-form-column">
+                <h2>Get in Touch</h2>
+                <p class="form-intro">Have questions about our pharmacy partnership? Reach out to us—we'd love to hear from you!</p>
+                
+                <form class="contact-form" method="POST" action="/contact">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="mobile" placeholder="Mobile Number" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                    <p class="form-note">We'll get back to you within 24 hours.</p>
+                </form>
+            </div>
+
+            <!-- Right Column: Contact Information -->
+            <div class="contact-info-column">
+                <h2>Contact Information</h2>
+                
+                <div class="contact-info-card">
+                    <div class="info-item">
+                        <div class="info-icon">🏢</div>
+                        <div class="info-content">
+                            <h3>Company</h3>
+                            <p>{{ settings.website_name or 'Medvika Pharmacy' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div class="info-content">
+                            <h3>Address</h3>
+                            <p>{{ settings.contact_address or 'Hospital Pharmacy Solutions, Healthcare District, India' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div class="info-content">
+                            <h3>Phone</h3>
+                            <p><a href="tel:{{ settings.contact_phone or '+919026805902' }}">{{ settings.contact_phone or '+91 9026805902' }}</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">✉️</div>
+                        <div class="info-content">
+                            <h3>Email</h3>
+                            <p><a href="mailto:{{ settings.contact_email or 'info@medvika.com' }}">{{ settings.contact_email or 'info@medvika.com' }}</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">⏰</div>
+                        <div class="info-content">
+                            <h3>Working Hours</h3>
+                            <p>{{ settings.business_hours or 'Mon–Sat: 9:00 AM – 8:00 PM<br>Sunday: Closed'|safe }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 4: Map Section -->
+<section class="map-section">
+    <div class="map-container">
+        <iframe src="{{ map_data.embed_url }}" width="100%" height="500" style="border:none;border-radius:12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</section>
+
+<!-- SECTION 5: Follow Us (Social) -->
+<section class="follow-us-section">
+    <div class="container-max">
+        <h2>Follow Us</h2>
+        <p>Stay connected with Medvika on social media for updates, healthcare tips, and partnership opportunities.</p>
+        <div class="social-icons">
+            {% if social_links %}
+                {% for link in social_links %}
+                <a href="{{ link.link_url }}" target="_blank" class="social-icon social-icon-{{ link.platform|lower|replace(' ', '-') }}" title="{{ link.platform }}" aria-label="Follow us on {{ link.platform }}">
+                    <span class="social-icon-inner">
+                        <i class="{{ link.icon }}"></i>
+                        <span class="social-label">{{ link.platform }}</span>
+                    </span>
+                </a>
+                {% endfor %}
+            {% else %}
+                <p style="color: #94a3b8; font-size: 0.9rem;">Social links will appear here once configured in admin panel.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/contact.js') }}"></script>
+{% endblock %}

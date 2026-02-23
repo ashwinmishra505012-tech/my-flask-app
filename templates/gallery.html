@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}Gallery - MedVika{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom-card.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+{% block content %}
+<section class="gallery-section" style="max-width:1200px;margin:6px auto 40px auto;padding:0 12px;overflow-x:hidden;">
+    <h2 style="margin-top:2px;margin-bottom:18px;">Gallery</h2>
+    <div class="gallery-toggle" style="display:flex;gap:12px;margin-bottom:15px;">
+        <button id="show-photos" class="btn btn-toggle active" style="margin-right:8px;">Photos</button>
+        <button id="show-videos" class="btn btn-toggle">Videos</button>
+    </div>
+    <div id="gallery-photos" class="gallery-grid" style="margin-bottom:32px;margin-top:0;">
+        {% for photo in photos %}
+        <div class="custom-card" data-description="{{ photo.description }}" data-title="{{ photo.title or photo.description }}">
+            <div class="media-wrapper">
+                <img src="/{{ photo.file_path }}" alt="Photo {{ photo.id }}" loading="lazy" class="media-img">
+                <div class="card-meta">
+                    <div class="meta-text">{{ photo.description }}</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-title">{{ photo.title or photo.description }}</div>
+                <button class="card-btn card-read-more">Read More</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div id="gallery-videos" class="gallery-grid" style="display:none;margin-bottom:32px;margin-top:0;overflow-x:hidden;">
+        {% for video in videos %}
+        <div class="custom-card" data-description="{{ video.description }}" data-title="{{ video.title or video.description }}">
+            <div class="media-wrapper video-wrapper">
+                <video controls preload="none" class="media-video">
+                    <source src="/{{ video.file_path }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="play-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                <div class="card-meta">
+                    <div class="meta-text">{{ video.description }}</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-title">{{ video.title or video.description }}</div>
+                <button class="card-btn card-read-more">Read More</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Description Modal -->
+<div id="descriptionModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px">
+  <div style="background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-radius:12px;padding:30px;max-width:380px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.2)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 id="modalTitle" style="margin:0;color:#0f172a;font-size:20px"></h3>
+      <button onclick="closeDescriptionModal()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#16a34a">&times;</button>
+    </div>
+    <div id="modalDescription" style="color:#374151;line-height:1.6;max-height:300px;overflow-y:auto"></div>
+    <button onclick="closeDescriptionModal()" style="margin-top:20px;background:#16a34a;color:white;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;width:100%">Close</button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/gallery-page.js') }}"></script>
+<script>
+function openDescriptionModal(title, description) {
+  document.getElementById('modalTitle').textContent = title || 'Details';
+  document.getElementById('modalDescription').textContent = description || 'No description available';
+  document.getElementById('descriptionModal').style.display = 'flex';
+}
+
+function closeDescriptionModal() {
+  document.getElementById('descriptionModal').style.display = 'none';
+}
+
+document.querySelectorAll(".card-read-more").forEach(btn => {
+    btn.addEventListener("click", function(e) {
+        e.preventDefault();
+        const card = this.closest('.custom-card');
+        const title = card.getAttribute('data-title');
+        const description = card.getAttribute('data-description');
+        openDescriptionModal(title, description);
+    });
+});
+
+// Close modal when clicking outside
+document.getElementById('descriptionModal')?.addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeDescriptionModal();
+  }
+});
+</script>
+{% endblock %}

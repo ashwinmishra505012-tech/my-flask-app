@@ -1,0 +1,256 @@
+{% extends 'admin/admin_base.html' %}
+{% block admin_title %}Manage Doctors - MedVika Admin{% endblock %}
+{% block admin_head %}
+<style>
+  .doctors-header{margin-bottom:1.5rem}
+  .doctors-header h2{margin:0 0 .5rem;font-size:1.75rem}
+  .doctor-stats{display:flex;gap:1rem;font-size:.9rem;color:#94a3b8}
+  .doctor-card{background:#0f172a;border:1px solid rgba(255,255,255,0.02);border-radius:.75rem;padding:1.5rem;margin-bottom:1.5rem}
+  .form-group{margin-bottom:1.25rem}
+  .form-label{display:block;margin-bottom:.5rem;font-weight:500;color:#e6eef6;font-size:.95rem}
+  .form-input{width:100%;padding:.75rem;background:#071224;border:1px solid rgba(255,255,255,0.05);border-radius:.5rem;color:#e6eef6;font-size:.95rem;font-family:inherit}
+  .form-input:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.1)}
+  .form-checkbox{accent-color:#3b82f6;width:18px;height:18px;cursor:pointer}
+  .btn-submit{background:#3b82f6;color:white;padding:.75rem 1.5rem;border:none;border-radius:.5rem;font-weight:500;cursor:pointer;transition:all .2s}
+  .btn-submit:hover{background:#2563eb;transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,130,246,0.3)}
+  .btn-close{background:#6b7280;color:white;padding:.5rem 1rem;border:none;border-radius:.5rem;cursor:pointer;font-size:.9rem;transition:all .2s}
+  .btn-close:hover{background:#4b5563}
+  .msg{padding:1rem;border-radius:.5rem;margin-bottom:1rem;font-size:.95rem}
+  .msg.success{background:rgba(34,197,94,0.1);border:1px solid #22c55e;color:#86efac}
+  .msg.error{background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#fca5a5}
+  .doctors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:1.5rem}
+  @media(min-width:1400px){ .doctors-grid{grid-template-columns:repeat(4,1fr)} }
+  @media(min-width:1024px) and (max-width:1399px){ .doctors-grid{grid-template-columns:repeat(3,1fr)} }
+  @media(min-width:768px) and (max-width:1023px){ .doctors-grid{grid-template-columns:repeat(2,1fr)} }
+  .doctor-item{background:#0f172a;border:1px solid rgba(255,255,255,0.02);border-radius:.75rem;overflow:hidden;transition:all .2s}
+  .doctor-item:hover{border-color:#3b82f6;box-shadow:0 0 20px rgba(59,130,246,0.1)}
+  .doctor-image{width:100%;height:240px;object-fit:cover;background:#071224;display:block;border:none}
+  .doctor-fallback{width:100%;height:240px;background:linear-gradient(135deg,#3b82f6,#1e40af);display:flex;align-items:center;justify-content:center;color:white;font-size:3rem}
+  .doctor-meta{padding:1rem}
+  .doctor-name{font-weight:600;color:#e6eef6;margin-bottom:.25rem}
+  .doctor-qual{font-size:.9rem;color:#60a5fa;margin-bottom:.25rem}
+  .doctor-desig{font-size:.85rem;color:#94a3b8;margin-bottom:.75rem}
+  .doctor-status{display:inline-block;font-size:.8rem;padding:.25rem .5rem;border-radius:.25rem;background:rgba(34,197,94,0.1);color:#86efac}
+  .doctor-status.hidden{background:rgba(239,68,68,0.1);color:#fca5a5}
+  .doctor-actions{display:flex;gap:.5rem;margin-top:.75rem}
+  .btn-small{flex:1;padding:.5rem;font-size:.85rem;border:none;border-radius:.4rem;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;justify-content:center}
+  .btn-edit{background:#3b82f6;color:white}
+  .btn-edit:hover{background:#2563eb}
+  .btn-delete{background:#ef4444;color:white}
+  .btn-delete:hover{background:#dc2626}
+  .no-doctors{grid-column:1/-1;padding:2rem;text-align:center;color:#94a3b8}
+  .modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:1rem}
+  .modal.show{display:flex}
+  .modal-content{background:#0f172a;border:1px solid rgba(255,255,255,0.1);border-radius:.75rem;padding:2rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+  .modal-header h3{margin:0;font-size:1.35rem;color:#e6eef6}
+  @media(max-width:768px){ .doctors-grid{grid-template-columns:1fr} }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="doctors-header">
+  <h2>Manage Doctors</h2>
+  <div class="doctor-stats">
+    <span><i class="fas fa-users"></i> Total: <strong>{{ doctors|length }}</strong></span>
+    <span><i class="fas fa-eye"></i> Visible: <strong>{{ doctors|selectattr('status', 'equalto', 'visible')|list|length }}</strong></span>
+  </div>
+</div>
+
+<div class="doctor-card">
+  <button class="btn-submit" onclick="openAddModal()"><i class="fas fa-plus"></i> Add New Doctor</button>
+</div>
+
+<div class="doctors-grid">
+  {% if doctors %}
+    {% for doctor in doctors %}
+    <div class="doctor-item">
+      {% if doctor.image_path and doctor.image_path != '' %}
+        <img src="/{{ doctor.image_path }}" alt="{{ doctor.name }}" class="doctor-image" loading="lazy">
+      {% else %}
+        <div class="doctor-fallback"><i class="fas fa-user-md"></i></div>
+      {% endif %}
+      <div class="doctor-meta">
+        <div class="doctor-name">{{ doctor.name }}</div>
+        <div class="doctor-qual">{{ doctor.qualification }}</div>
+        {% if doctor.designation %}
+        <div class="doctor-desig">{{ doctor.designation }}</div>
+        {% endif %}
+        <div style="margin-bottom:.75rem">
+          <span class="doctor-status {% if doctor.status == 'hidden' %}hidden{% endif %}">
+            {{ doctor.status|title }}
+          </span>
+        </div>
+      <div class="doctor-actions">
+          <button class="btn-small btn-edit" data-doctor-id="{{ doctor.id }}" data-doctor-name="{{ doctor.name }}" data-doctor-qual="{{ doctor.qualification }}" data-doctor-desig="{{ doctor.designation or '' }}" data-doctor-status="{{ doctor.status }}">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button class="btn-small btn-delete" data-doctor-id="{{ doctor.id }}">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+  <div class="no-doctors">
+    <div style="font-size:3rem;margin-bottom:1rem"><i class="fas fa-users"></i></div>
+    <p>No doctors added yet. Click "Add New Doctor" to get started.</p>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="doctorModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add New Doctor</h3>
+      <button class="btn-close" onclick="closeDoctorModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="doctorForm" enctype="multipart/form-data">
+      <input type="hidden" id="doctorId" name="doctor_id">
+      
+      <div class="form-group">
+        <label class="form-label">Doctor Name *</label>
+        <input type="text" id="doctorName" name="name" placeholder="Enter doctor name" required class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Qualification *</label>
+        <input type="text" id="doctorQual" name="qualification" placeholder="e.g. B.Pharm, PharmD, MD, MBBS" required class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Designation (optional)</label>
+        <input type="text" id="doctorDesig" name="designation" placeholder="e.g. Chief Pharmacist, Lead Doctor" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Doctor Photo</label>
+        <input type="file" id="doctorImage" name="image" accept="image/jpeg,image/png,image/webp" class="form-input">
+        <small style="color:#94a3b8;font-size:.85rem">JPG, PNG, or WebP (max 5MB)</small>
+      </div>
+
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;color:#e6eef6">
+          <input type="checkbox" id="doctorStatus" name="status" value="visible" checked class="form-checkbox">
+          Show on website
+        </label>
+      </div>
+
+      <div style="display:flex;gap:.75rem;justify-content:flex-end">
+        <button type="button" class="btn-close" onclick="closeDoctorModal()">Cancel</button>
+        <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Save Doctor</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+let currentDoctorId = null;
+
+function openAddModal() {
+  currentDoctorId = null;
+  document.getElementById('modalTitle').textContent = 'Add New Doctor';
+  document.getElementById('doctorForm').reset();
+  document.getElementById('doctorId').value = '';
+  document.getElementById('doctorStatus').checked = true;
+  document.getElementById('doctorModal').classList.add('show');
+}
+
+function openEditModal(doctorId, name, qual, desig, status) {
+  currentDoctorId = doctorId;
+  document.getElementById('modalTitle').textContent = 'Edit Doctor';
+  document.getElementById('doctorId').value = doctorId;
+  document.getElementById('doctorName').value = name;
+  document.getElementById('doctorQual').value = qual;
+  document.getElementById('doctorDesig').value = desig;
+  document.getElementById('doctorStatus').checked = status === 'visible';
+  document.getElementById('doctorImage').value = '';
+  document.getElementById('doctorImage').required = false;
+  document.getElementById('photoRequiredLabel').textContent = '(optional)';
+  document.getElementById('doctorModal').classList.add('show');
+}
+
+function closeDoctorModal() {
+  document.getElementById('doctorModal').classList.remove('show');
+  currentDoctorId = null;
+}
+
+// Edit and Delete button listeners
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-doctor-id');
+      const name = this.getAttribute('data-doctor-name');
+      const qual = this.getAttribute('data-doctor-qual');
+      const desig = this.getAttribute('data-doctor-desig');
+      const status = this.getAttribute('data-doctor-status');
+      openEditModal(id, name, qual, desig, status);
+    });
+  });
+
+  document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-doctor-id');
+      if (confirm('Are you sure you want to delete this doctor?')) {
+        deleteDoctor(id);
+      }
+    });
+  });
+});
+
+function deleteDoctor(doctorId) {
+  const formData = new FormData();
+  fetch(`/admin/doctor/delete/${doctorId}`, {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Doctor deleted successfully');
+      location.reload();
+    } else {
+      alert('Error: ' + (data.error || 'Unknown error'));
+    }
+  })
+  .catch(err => alert('Error: ' + err.message));
+}
+
+document.getElementById('doctorForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  const doctorId = document.getElementById('doctorId').value;
+  const status = document.getElementById('doctorStatus').checked ? 'visible' : 'hidden';
+  formData.set('status', status);
+  
+  const url = doctorId 
+    ? `/admin/doctor/edit/${doctorId}`
+    : '/admin/doctor/add';
+  
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    
+    if (data.success) {
+      alert(doctorId ? 'Doctor updated successfully' : 'Doctor added successfully');
+      location.reload();
+    } else {
+      alert('Error: ' + (data.error || 'Unknown error'));
+    }
+  } catch (err) {
+    alert('Error: ' + err.message);
+  }
+});
+
+// Close modal when clicking outside
+document.getElementById('doctorModal').addEventListener('click', function(e) {
+  if (e.target === this) closeDoctorModal();
+});
+</script>
+{% endblock %}

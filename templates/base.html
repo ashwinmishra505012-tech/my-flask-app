@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ site_settings.meta_description or 'Online pharmacy delivering quality medicines with care and responsibility.' }}">
+    <meta name="keywords" content="{{ site_settings.meta_keywords or 'pharmacy, medicines, health' }}">
+    <title>{% block title %}Medvika Pharmacy{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('favicon') }}">
+    <link rel="alternate icon" type="image/png" href="{{ url_for('static', filename='img/icons/logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navfooter.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    {% block head %}{% endblock %}
+    <script defer src="{{ url_for('static', filename='js/gallery.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/navfooter.js') }}"></script>
+</head>
+<body>
+    <div class="medical-bg"></div>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <img src="{{ url_for('static', filename='img/icons/logo.png') }}" alt="Medvika Logo" style="height:32px;width:auto;vertical-align:middle;margin-right:8px;">
+          Medvika Pharmacy
+        </div>
+        <div class="menu-btn" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-links" id="navLinks">
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+          <a href="/gallery">Gallery</a>
+          {% if 'admin_logged_in' in session %}
+          <a href="/admin/dashboard">Admin</a>
+          {% else %}
+          <a href="/admin">Admin</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flashes">
+              {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-box">
+          <h3>About Pharmacy</h3>
+          <p>
+            {{ site_settings.footer_description or 'Trusted & licensed pharmacy delivering quality medicines with care and responsibility.' }}
+          </p>
+        </div>
+        <div class="footer-box">
+          <h3>Quick Links</h3>
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+          <a href="/gallery">Gallery</a>
+          <a href="/contact">Contact</a>
+        </div>
+        <div class="footer-box">
+          <h3>Customer Support</h3>
+          <a href="/admin">Admin Login</a>
+          <a href="/admin/messages">Messages</a>
+          <a href="mailto:{{ site_settings.contact_email or 'support@medvika.com' }}">{{ site_settings.contact_email or 'support@medvika.com' }}</a>
+        </div>
+        <div class="footer-box">
+          <h3>Follow Us</h3>
+          <div class="social-icons">
+            {% if social_links %}
+              {% for link in social_links %}
+              <a href="{{ link.link_url }}" target="_blank" title="{{ link.platform }}"><i class="{{ link.icon }}"></i> {{ link.platform }}</a>
+              {% endfor %}
+            {% else %}
+              <p style="color: #94a3b8; font-size: 0.9rem;">No social links configured</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        {{ site_settings.footer_text or '© 2026 Medvika Pharmacy. All Rights Reserved.' }}
+      </div>
+    </footer>
+</body>
+</html>

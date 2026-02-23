@@ -1,0 +1,372 @@
+/* upload.css - Admin Content Upload */
+body {
+    background: #f6f8fa;
+}
+.admin-upload-section {
+    max-width: 700px;
+    margin: 5vh auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(31,111,67,0.08);
+    padding: 2.5rem 2rem 2rem 2rem;
+}
+.admin-upload-section h2, .admin-upload-section h3 {
+    color: #1f6f43;
+    margin-bottom: 1.5rem;
+}
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.gallery-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+.btn-toggle {
+    background: #a8ffdf;
+    color: #1f6f43;
+    border-radius: 20px;
+    border: 2px solid #1f6f43;
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+}
+.btn-toggle.active, .btn-toggle:hover {
+    background: #1f6f43;
+    color: #fff;
+    border-color: #1f6f43;
+}
+.content-count {
+    font-size: 1rem;
+    color: #1f6f43;
+    margin-left: 1rem;
+    font-weight: 600;
+}
+.upload-type {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+.btn-upload {
+    background: #a8ffdf;
+    color: #1f6f43;
+    border-radius: 20px;
+    border: 2px solid #1f6f43;
+    font-size: 1.1rem;
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+}
+.btn-upload input[type="radio"] {
+    display: none;
+}
+.btn-upload:has(input[type="radio"]:checked) {
+    background: #1f6f43;
+    color: #fff;
+    border-color: #1f6f43;
+}
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 400px;
+    margin: 0 auto 2rem auto;
+}
+.upload-type {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 0.5rem;
+    justify-content: center;
+}
+.btn-upload {
+    background: #a8ffdf;
+    color: #1f6f43;
+    border-radius: 20px;
+    border: 2px solid #1f6f43;
+    font-size: 1.1rem;
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+}
+.btn-upload input[type="radio"] {
+    display: none;
+}
+.btn-upload:has(input[type="radio"]:checked) {
+    background: #1f6f43;
+    color: #fff;
+    border-color: #1f6f43;
+}
+.upload-file, .upload-title, .upload-description {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #1f6f43;
+    font-size: 1rem;
+    background: #f6f8fa;
+    color: #1f6f43;
+}
+.upload-title {
+    margin-bottom: 0.5rem;
+}
+.upload-description {
+    min-height: 60px;
+    resize: vertical;
+}
+.content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 2rem;
+}
+.content-card {
+    display: flex;
+    align-items: center;
+    background: #f6f8fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(31,111,67,0.10);
+    padding: 1rem 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.content-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 16px rgba(31,111,67,0.18);
+}
+.card-left {
+    margin-right: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+.card-index {
+    font-size: 1.1rem;
+    color: #2196f3;
+    font-weight: 700;
+    background: #e3f2fd;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+}
+.card-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(31,111,67,0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #e0f2f1;
+}
+.card-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f6f43;
+    margin-bottom: 0.2rem;
+    background: #fff;
+    border-radius: 6px;
+    padding: 0.2rem 0.7rem;
+    display: inline-block;
+    width: fit-content;
+}
+.card-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.7rem;
+}
+.btn-edit {
+    background: #2196f3;
+    color: #fff;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-edit:hover {
+    background: #1565c0;
+}
+.btn-delete {
+    background: #ffd4d4;
+    color: #a00;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-delete:hover {
+    background: #a00;
+    color: #fff;
+}
+.card-desc {
+    color: #2e7d32;
+    font-size: 0.98rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+.upload-form input[type="file"],
+.upload-form input[type="text"],
+.upload-form textarea {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #1f6f43;
+    font-size: 1rem;
+    background: #f6f8fa;
+    color: #1f6f43;
+}
+.upload-form textarea {
+    min-height: 60px;
+    resize: vertical;
+}
+.upload-form button {
+    align-self: flex-end;
+    background: #1f6f43;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.upload-form button:hover {
+    background: #2e7d32;
+}
+.message {
+    margin: 1rem 0;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(31,111,67,0.08);
+}
+.message.success { background: #d4ffe6; color: #1f6f43; }
+.message.error { background: #ffd4d4; color: #a00; }
+
+.content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 2rem;
+}
+.content-card {
+    display: flex;
+    align-items: center;
+    background: #f6f8fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(31,111,67,0.10);
+    padding: 1rem 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.content-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 16px rgba(31,111,67,0.18);
+}
+.card-left {
+    margin-right: 1.5rem;
+}
+.card-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(31,111,67,0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #e0f2f1;
+}
+.card-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f6f43;
+    margin-bottom: 0.2rem;
+    background: #fff;
+    border-radius: 6px;
+    padding: 0.2rem 0.7rem;
+    display: inline-block;
+    width: fit-content;
+}
+.card-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.7rem;
+}
+.btn-edit {
+    background: #2196f3;
+    color: #fff;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-edit:hover {
+    background: #1565c0;
+}
+.btn-delete {
+    background: #ffd4d4;
+    color: #a00;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-delete:hover {
+    background: #a00;
+    color: #fff;
+}
+.card-desc {
+    color: #2e7d32;
+    font-size: 0.98rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
