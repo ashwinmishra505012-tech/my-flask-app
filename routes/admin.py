@@ -8,22 +8,34 @@ import sqlite3
 import logging
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, flash, session, jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from routes import admin_bp
 from models import get_db_connection
 from utils import admin_login_required, verify_admin_credentials
-from utils.helpers import allowed_file, get_platform_icon, is_allowed_image, is_allowed_video
+from utils.helpers import allowed_file, get_platform_icon, validate_image_file, validate_video_file
 from config import (
     UPLOAD_FOLDER_PHOTOS, UPLOAD_FOLDER_VIDEOS, 
     ALLOWED_IMAGE_EXTENSIONS, ALLOWED_VIDEO_EXTENSIONS,
-    PLATFORM_ICONS, DEFAULT_SETTINGS, DEFAULT_MAP_SETTINGS, DEFAULT_STYLE_SETTINGS
+    PLATFORM_ICONS, DEFAULT_SETTINGS, DEFAULT_MAP_SETTINGS, DEFAULT_STYLE_SETTINGS,
+    RATELIMIT_STORAGE_URI, RATELIMIT_STRATEGY
+)
+
+
+# Rate limiter for admin routes
+admin_limiter = Limiter(
+    key_func=get_remote_address,
+    storage_uri=RATELIMIT_STORAGE_URI,
+    strategy=RATELIMIT_STRATEGY
 )
 
 
 # ===== ADMIN LOGIN & LOGOUT =====
 
 @admin_bp.route('', methods=['GET', 'POST'])
+@admin_limiter.limit("5 per minute")  # Stricter limit for login attempts
 def admin_login():
     """
     Admin login page.
@@ -81,22 +93,10 @@ def admin_login():
                         session['admin_logged_in'] = True
                         return redirect(url_for('admin.admin_dashboard'))
                 else:
-                    # No hash set; allow fallback '1234'
-                    if password != '1234':
-                        password_error = 'Invalid password'
-                        wrong_password = password
-                        error = 'Invalid credentials'
-                    else:
-                        try:
-                            ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-                            if ip and ',' in ip:
-                                ip = ip.split(',')[0].strip()
-                            logging.info('ADMIN_LOGIN %s %s', ip or '-', username)
-                        except Exception:
-                            pass
-                        session.permanent = True
-                        session['admin_logged_in'] = True
-                        return redirect(url_for('admin.admin_dashboard'))
+                    # No password hash set - deny login and log security issue
+                    logging.warning('ADMIN_LOGIN_ATTEMPT_NO_HASH %s', username)
+                    password_error = 'Invalid password'
+                    error = 'Invalid credentials'
             except Exception:
                 error = 'Invalid credentials'
             # If we reach here due to an exception, do not reveal password; keep wrong_password as previously set
@@ -170,14 +170,14 @@ def admin_upload():
         if not (media_type and file and title and description):
             message = 'All fields are required.'
             message_type = 'error'
-        elif media_type == 'photo' and is_allowed_image(file.filename):
+        elif media_type == 'photo' and validate_image_file(file):
             # Save photo
             filename = secure_filename(file.filename)
             save_path = os.path.join(UPLOAD_FOLDER_PHOTOS, filename)
             file.save(save_path)
             db_path = save_path
             message = None
-        elif media_type == 'video' and is_allowed_video(file.filename):
+        elif media_type == 'video' and validate_video_file(file):
             # Save video
             filename = secure_filename(file.filename)
             save_path = os.path.join(UPLOAD_FOLDER_VIDEOS, filename)
@@ -185,7 +185,7 @@ def admin_upload():
             db_path = save_path
             message = None
         else:
-            message = 'Invalid file type.'
+            message = 'Invalid file type or corrupted file.'
             message_type = 'error'
             db_path = None
         

@@ -3,6 +3,7 @@ Helper functions and utilities for file handling and data processing.
 Contains file validation, template context injection, and icon mappings.
 """
 
+import mimetypes
 from config import ALLOWED_IMAGE_EXTENSIONS, ALLOWED_VIDEO_EXTENSIONS, PLATFORM_ICONS
 from models import get_db_connection
 
@@ -23,6 +24,46 @@ def is_allowed_image(filename):
 def is_allowed_video(filename):
     """Check if filename is an allowed video file."""
     return allowed_file(filename, ALLOWED_VIDEO_EXTENSIONS)
+
+
+def validate_image_file(file):
+    """
+    Validate image file by checking extension and MIME type.
+    Returns True if valid, False otherwise.
+    """
+    if not file or not file.filename:
+        return False
+    
+    # Check extension
+    if not is_allowed_image(file.filename):
+        return False
+    
+    # Check MIME type
+    mime_type, _ = mimetypes.guess_type(file.filename)
+    if mime_type not in ['image/png', 'image/jpeg', 'image/gif']:
+        return False
+    
+    return True
+
+
+def validate_video_file(file):
+    """
+    Validate video file by checking extension and MIME type.
+    Returns True if valid, False otherwise.
+    """
+    if not file or not file.filename:
+        return False
+    
+    # Check extension
+    if not is_allowed_video(file.filename):
+        return False
+    
+    # Check MIME type
+    mime_type, _ = mimetypes.guess_type(file.filename)
+    if mime_type not in ['video/mp4', 'video/webm', 'video/ogg']:
+        return False
+    
+    return True
 
 
 def get_platform_icon(platform):

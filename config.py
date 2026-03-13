@@ -6,13 +6,23 @@ Contains all environment variables, file paths, and constants.
 import os
 from datetime import timedelta
 
+# Load environment variables from .env file if it exists
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Flask Configuration
-SECRET_KEY = 'your_secret_key_here'  # CHANGE THIS IN PRODUCTION
-DEBUG = True  # Set to False in production
+SECRET_KEY = os.environ.get('SECRET_KEY') or 'CHANGE_THIS_IN_PRODUCTION_TO_A_STRONG_RANDOM_KEY'
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'  # Default to False for security
 
 # Session Configuration (15-minute timeout)
 PERMANENT_SESSION_LIFETIME = timedelta(minutes=15)
 SESSION_REFRESH_EACH_REQUEST = True  # Reset timer on each request
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to session cookie
+SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'False').lower() == 'true'  # Set to True in production with HTTPS
+SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
 
 # Database Configuration
 DATABASE = os.path.join('instance', 'site.db')
@@ -21,9 +31,15 @@ DATABASE = os.path.join('instance', 'site.db')
 UPLOAD_FOLDER_PHOTOS = 'static/uploads/photos/'
 UPLOAD_FOLDER_VIDEOS = 'static/uploads/videos/'
 
-# Allowed File Extensions
+# File Upload Security
+MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB limit
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 ALLOWED_VIDEO_EXTENSIONS = {'mp4', 'webm', 'ogg'}
+
+# Rate Limiting
+RATELIMIT_STORAGE_URI = "memory://"  # Use Redis in production
+RATELIMIT_DEFAULT = "200 per day;50 per hour"
+RATELIMIT_STRATEGY = "fixed-window"
 
 # Platform to Icon Mapping (Font Awesome)
 PLATFORM_ICONS = {

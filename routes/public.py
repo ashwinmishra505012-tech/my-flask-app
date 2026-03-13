@@ -3,6 +3,7 @@ Public routes for the front-end website.
 Includes: home, about, contact, gallery pages.
 """
 
+import re
 from flask import render_template, request, redirect, url_for, flash
 from datetime import datetime
 from routes import public_bp
@@ -53,6 +54,23 @@ def contact():
             # Validate required fields
             if not all([name, email, message]):
                 flash('Please fill in all required fields (Name, Email, Message)', 'danger')
+                return redirect(url_for('public.contact'))
+            
+            # Validate input lengths and formats
+            if len(name) > 100 or not re.match(r'^[a-zA-Z\s]+$', name):
+                flash('Invalid name. Must be letters and spaces only, max 100 characters.', 'danger')
+                return redirect(url_for('public.contact'))
+            
+            if len(email) > 254 or not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                flash('Invalid email address.', 'danger')
+                return redirect(url_for('public.contact'))
+            
+            if mobile and (len(mobile) > 15 or not re.match(r'^[\d\s\-\+\(\)]+$', mobile)):
+                flash('Invalid mobile number.', 'danger')
+                return redirect(url_for('public.contact'))
+            
+            if len(message) > 1000:
+                flash('Message too long. Maximum 1000 characters.', 'danger')
                 return redirect(url_for('public.contact'))
             
             # Save message to database

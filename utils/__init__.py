@@ -44,22 +44,12 @@ def verify_admin_credentials(username, password):
                 ok = username == stored_user and check_password_hash(stored_hash, password)
                 if ok:
                     return True
-                # Allow emergency login with '1234' and update DB to the new hash for future logins
-                if username == stored_user and password == '1234':
-                    try:
-                        conn2 = get_db_connection()
-                        conn2.execute('UPDATE settings SET admin_password = ? WHERE id = 1', (generate_password_hash('1234'),))
-                        conn2.commit()
-                        conn2.close()
-                        return True
-                    except Exception:
-                        return False
                 return False
             except Exception:
                 return False
         else:
-            # Fallback to plain password if hash not set (shouldn't happen)
-            return username == stored_user and password == 'password'
+            # No password hash set - deny login
+            return False
     else:
         # Fallback to default credentials
         return username == 'admin' and password == 'password'
