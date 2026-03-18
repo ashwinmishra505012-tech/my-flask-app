@@ -13613,3 +13613,79 @@
 2026-03-17 20:21:07 INFO 127.0.0.1 - - [17/Mar/2026 20:21:07] "[36mGET /static/img/jpeg/updr.jpg HTTP/1.1[0m" 304 -
 2026-03-17 20:21:07 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/logo.png
 2026-03-17 20:21:07 INFO 127.0.0.1 - - [17/Mar/2026 20:21:07] "[36mGET /static/img/jpeg/logo.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "GET / HTTP/1.1" 200 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/css/home.css
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/css/style.css
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/css/home.css HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/css/navfooter.css
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/logo.png
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/css/navfooter.css HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/jpeg/logo.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/counter.jpeg
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/icons/graph.png
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/jpeg/counter.jpeg HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/icons/doctor.png
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/icons/graph.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/icons/shop.png
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/icons/doctor.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/js/home.js
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/icons/shop.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/js/gallery.js
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/js/navfooter.js
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/js/gallery.js HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/js/navfooter.js HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/icons/trust.png
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/icons/management.png
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/icons/certificate.png
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/icons/trust.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/icons/management.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/icons/daily-tasks.png
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/grdr.jpg
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/icons/certificate.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/icons/daily-tasks.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/updr.jpg
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/jpeg/grdr.jpg HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/jpeg/updr.jpg HTTP/1.1[0m" 304 -
+2026-03-17 20:24:47 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/logo.png
+2026-03-17 20:24:47 INFO 127.0.0.1 - - [17/Mar/2026 20:24:47] "[36mGET /static/img/jpeg/logo.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "GET / HTTP/1.1" 200 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/css/home.css
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/css/style.css
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/css/home.css HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/css/navfooter.css
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/logo.png
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/css/navfooter.css HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/counter.jpeg
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/jpeg/logo.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/icons/graph.png
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/jpeg/counter.jpeg HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/icons/doctor.png
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/icons/graph.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/icons/shop.png
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/icons/doctor.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/js/home.js
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/js/gallery.js
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/icons/shop.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/js/navfooter.js
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/js/gallery.js HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/icons/trust.png
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/js/navfooter.js HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/icons/management.png
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/icons/trust.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/icons/management.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/icons/certificate.png
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/icons/daily-tasks.png
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/grdr.jpg
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/icons/certificate.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/icons/daily-tasks.png HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/updr.jpg
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/jpeg/grdr.jpg HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/jpeg/updr.jpg HTTP/1.1[0m" 304 -
+2026-03-17 20:24:48 INFO ACCESS 127.0.0.1 GET /static/img/jpeg/logo.png
+2026-03-17 20:24:48 INFO 127.0.0.1 - - [17/Mar/2026 20:24:48] "[36mGET /static/img/jpeg/logo.png HTTP/1.1[0m" 304 -
