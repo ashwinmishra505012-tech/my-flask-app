@@ -11,17 +11,10 @@ This file handles:
 
 import os
 import logging
-from datetime import timedelta
 from flask import Flask, session, redirect, url_for, flash, request, Response
-from flask_wtf.csrf import CSRFProtect
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from flask_talisman import Talisman
 from config import (
     SECRET_KEY, DEBUG, DATABASE, UPLOAD_FOLDER_PHOTOS, UPLOAD_FOLDER_VIDEOS,
-    PERMANENT_SESSION_LIFETIME, SESSION_REFRESH_EACH_REQUEST, SESSION_COOKIE_HTTPONLY,
-    SESSION_COOKIE_SECURE, SESSION_COOKIE_SAMESITE, MAX_CONTENT_LENGTH,
-    RATELIMIT_STORAGE_URI, RATELIMIT_DEFAULT, RATELIMIT_STRATEGY, DEFAULT_SETTINGS
+    DEFAULT_SETTINGS
 )
 from models import init_db, get_db_connection
 from utils.helpers import get_social_links
@@ -37,51 +30,6 @@ app.debug = DEBUG
 app.config['UPLOAD_FOLDER_PHOTOS'] = UPLOAD_FOLDER_PHOTOS
 app.config['UPLOAD_FOLDER_VIDEOS'] = UPLOAD_FOLDER_VIDEOS
 app.config['DATABASE'] = DATABASE
-
-# Session Configuration - 15 minute timeout with security
-app.config['PERMANENT_SESSION_LIFETIME'] = PERMANENT_SESSION_LIFETIME
-app.config['SESSION_REFRESH_EACH_REQUEST'] = SESSION_REFRESH_EACH_REQUEST
-app.config['SESSION_COOKIE_HTTPONLY'] = SESSION_COOKIE_HTTPONLY
-app.config['SESSION_COOKIE_SECURE'] = SESSION_COOKIE_SECURE
-app.config['SESSION_COOKIE_SAMESITE'] = SESSION_COOKIE_SAMESITE
-
-# ===== SECURITY MIDDLEWARE =====
-
-# CSRF Protection
-csrf = CSRFProtect(app)
-
-# Rate Limiting
-limiter = Limiter(
-    app=app,
-    key_func=get_remote_address,
-    storage_uri=RATELIMIT_STORAGE_URI,
-    default_limits=[RATELIMIT_DEFAULT],
-    strategy=RATELIMIT_STRATEGY
-)
-
-# Security Headers
-csp = {
-    'default-src': "'self'",
-    'script-src': "'self' 'unsafe-inline' https://kit.fontawesome.com",
-    'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
-    'font-src': "'self' https://fonts.gstatic.com https://kit.fontawesome.com",
-    'img-src': "'self' data: https:",
-    'frame-src': "'self' https://www.google.com",
-    'object-src': "'none'",
-    'base-uri': "'self'",
-    'form-action': "'self'"
-}
-
-talisman = Talisman(
-    app,
-    content_security_policy=csp,
-    content_security_policy_nonce_in=['script-src', 'style-src'],
-    force_https=False,  # Set to True in production with HTTPS
-    strict_transport_security=True,
-    strict_transport_security_max_age=31536000,
-    strict_transport_security_include_subdomains=True,
-    referrer_policy='strict-origin-when-cross-origin'
-)
 
 # ===== ACCESS LOGGING =====
 # Use built-in logging to append request access entries to `access.log`.

@@ -8,34 +8,22 @@ import sqlite3
 import logging
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, flash, session, jsonify
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from routes import admin_bp
 from models import get_db_connection
 from utils import admin_login_required, verify_admin_credentials
-from utils.helpers import allowed_file, get_platform_icon, validate_image_file, validate_video_file
+from utils.helpers import allowed_file, get_platform_icon
 from config import (
     UPLOAD_FOLDER_PHOTOS, UPLOAD_FOLDER_VIDEOS, 
     ALLOWED_IMAGE_EXTENSIONS, ALLOWED_VIDEO_EXTENSIONS,
-    PLATFORM_ICONS, DEFAULT_SETTINGS, DEFAULT_MAP_SETTINGS, DEFAULT_STYLE_SETTINGS,
-    RATELIMIT_STORAGE_URI, RATELIMIT_STRATEGY
-)
-
-
-# Rate limiter for admin routes
-admin_limiter = Limiter(
-    key_func=get_remote_address,
-    storage_uri=RATELIMIT_STORAGE_URI,
-    strategy=RATELIMIT_STRATEGY
+    PLATFORM_ICONS, DEFAULT_SETTINGS, DEFAULT_MAP_SETTINGS, DEFAULT_STYLE_SETTINGS
 )
 
 
 # ===== ADMIN LOGIN & LOGOUT =====
 
 @admin_bp.route('', methods=['GET', 'POST'])
-@admin_limiter.limit("5 per minute")  # Stricter limit for login attempts
 def admin_login():
     """
     Admin login page.
@@ -170,14 +158,14 @@ def admin_upload():
         if not (media_type and file and title and description):
             message = 'All fields are required.'
             message_type = 'error'
-        elif media_type == 'photo' and validate_image_file(file):
+        elif media_type == 'photo' and allowed_file(file.filename, ALLOWED_IMAGE_EXTENSIONS):
             # Save photo
             filename = secure_filename(file.filename)
             save_path = os.path.join(UPLOAD_FOLDER_PHOTOS, filename)
             file.save(save_path)
             db_path = save_path
             message = None
-        elif media_type == 'video' and validate_video_file(file):
+        elif media_type == 'video' and allowed_file(file.filename, ALLOWED_VIDEO_EXTENSIONS):
             # Save video
             filename = secure_filename(file.filename)
             save_path = os.path.join(UPLOAD_FOLDER_VIDEOS, filename)
